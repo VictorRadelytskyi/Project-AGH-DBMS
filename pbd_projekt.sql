@@ -15,6 +15,12 @@ CREATE TABLE [Customers] (
 GO
 
 EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Lista klientów',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Customers';
+GO
+
+EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Imię osoby kontaktowej u danego klienta',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Customers',
@@ -88,6 +94,12 @@ CREATE TABLE [CustomerDemographics] (
 GO
 
 EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Dane demograficzne o klientach',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'CustomerDemographics';
+GO
+
+EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Zakodowana grupa wiekowa, np. 1=18–24, 2=25–34, ...',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'CustomerDemographics',
@@ -121,9 +133,15 @@ CREATE TABLE [Orders] (
 	[EmployeeID] INTEGER NOT NULL,
 	[OrderDate] DATE NOT NULL,
 	[RequiredDate] DATE,
-	[Freight] DECIMAL(10,2) NOT NULL,
+	[Freight] DECIMAL(10,2) NOT NULL CHECK([Freight] >= 0.00),
 	PRIMARY KEY([ID])
 );
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Lista zamówień',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders';
 GO
 
 EXEC sys.sp_addextendedproperty
@@ -150,11 +168,17 @@ GO
 CREATE TABLE [OrderDetails] (
 	[OrderID] INTEGER NOT NULL IDENTITY UNIQUE,
 	[ProductID] INTEGER NOT NULL,
-	[UnitPrice] DECIMAL(10,2) NOT NULL,
-	[Quantity] SMALLINT NOT NULL,
-	[Discount] DECIMAL(5,4) NOT NULL,
+	[UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
+	[Quantity] SMALLINT NOT NULL CHECK([Quantity] > 0),
+	[Discount] DECIMAL(5,4) NOT NULL CHECK([Discount] BETWEEN 0 AND 1),
 	PRIMARY KEY([OrderID], [ProductID])
 );
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Szczegóły zamówienia',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'OrderDetails';
 GO
 
 EXEC sys.sp_addextendedproperty
