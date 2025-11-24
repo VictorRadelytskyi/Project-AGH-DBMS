@@ -202,9 +202,57 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'Discount';
 GO
 
+CREATE TABLE [EmployeePositions] (
+	[ID] INT NOT NULL IDENTITY PRIMARY KEY,
+    [PositionName] VARCHAR(255) NOT NULL,
+    [PositionDescription] VARCHAR(MAX) NOT NULL,
+    [ProductivityFactor] DECIMAL(4,2) NOT NULL CHECK([ProductivityFactor] BETWEEN 0 AND 10)
+);
+GO
+
 CREATE TABLE [Employees] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
-	PRIMARY KEY([ID])
+	[ID] INT NOT NULL IDENTITY PRIMARY KEY,
+    [EmployeePositionID] INT,
+    [FirstName] VARCHAR(255) NOT NULL,
+    [LastName] VARCHAR(255) NOT NULL,
+    [BirthDate] DATE NOT NULL,
+    [StreetAddress] VARCHAR(2000) NOT NULL,
+    [City] VARCHAR(255) NOT NULL,
+    [Region] VARCHAR(255) NOT NULL,
+    [PostalCode] VARCHAR(16) NOT NULL,
+    [Country] VARCHAR(255) NOT NULL,
+    [PhoneNumber] VARCHAR(32) NOT NULL,
+    [ReportsTo] INT,
+    [PhotoBin] VARBINARY(MAX),
+	CONSTRAINT [FK_Employees_ReportsTo] FOREIGN KEY ([ReportsTo]) REFERENCES [Employees]([ID]),
+    CONSTRAINT [FK_Employees_EmployeePositionID] FOREIGN KEY ([EmployeePositionID]) REFERENCES [EmployeePositions]([ID])
+);
+GO
+
+CREATE TABLE [Suppliers] (
+    [ID] INT NOT NULL IDENTITY PRIMARY KEY,
+    [CompanyName] VARCHAR(255) NOT NULL, 
+    [ContactName] VARCHAR(255) NOT NULL, 
+    [ContactTitle] VARCHAR(255), 
+    [StreetAddress] VARCHAR(2000) NOT NULL,
+    [City] VARCHAR(255) NOT NULL,
+    [Region] VARCHAR(255) NOT NULL,
+    [PostalCode] VARCHAR(16) NOT NULL,
+    [Country] VARCHAR(255) NOT NULL,
+    [PhoneNumber] VARCHAR(32) NOT NULL,
+	[Fax] VARCHAR(32)
+);
+GO
+
+CREATE TABLE [Components] (
+    [ID] INT NOT NULL IDENTITY PRIMARY KEY,
+    [SupplierID] INT,
+    [ComponentName] VARCHAR(255) NOT NULL,
+    [ComponentType] VARCHAR(255) NOT NULL,
+    [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
+    [UnitsInStock] INT NOT NULL DEFAULT 0 CHECK([UnitsInStock] >= 0), 
+    [LeadTime] SMALLINT DEFAULT -1 CHECK([LeadTime] >= 0 OR [LeadTime] = -1),
+    CONSTRAINT [FK_Components_SupplierID] FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID])
 );
 GO
 
