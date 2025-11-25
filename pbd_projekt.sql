@@ -264,9 +264,7 @@ CREATE TABLE [Products] (
     QuantityPerUnit INT NOT NULL, 
     UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
     ProductRecipesID INT NOT NULL,
-    FOREIGN KEY ([CategoryID]) REFERENCES [Categories]([id]),
     FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
-    FOREIGN KEY ([ProductRecipesID]) REFERENCES  [ProductRecipes]([ID]),
 	PRIMARY KEY([ID])
 );
 GO
@@ -288,7 +286,7 @@ GO
 CREATE TABLE [Categories] (
 	[ID] INT IDENTITY,
     CategoryName VARCHAR(250) NOT NULL, 
-    Description VARCHAR(250), 
+    Description VARCHAR(8000), 
     Picture VARBINARY(MAX),
 	PRIMARY KEY([ID])
 );
@@ -300,12 +298,12 @@ EXEC sys.sp_addextendedproperty
     @level1type=N'TABLE',@level1name=N'Categories'
 GO
 
+
 CREATE TABLE [Warehouse] (
 	[ID] INT IDENTITY,
     ProductID INT NOT NULL,
     UnitsInStock INT NOT NULL,
-    /* czym ma być Stockdate? */
-    StockDate DATE,
+    LastStockUpdate DATETIME DEFAULT GETDATE(),
     StockLocation VARCHAR(150) NOT NULL,
     FOREIGN KEY([ProductID]) REFERENCES [Products](ID),
 	PRIMARY KEY([ID])
@@ -322,14 +320,21 @@ EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Miejsce w którym znajduje się product o id ProductID',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Warehouse',
-    @level2type=N'Column',@level2name=N'StockLocation'
+    @level2type=N'COLUMN',@level2name=N'StockLocation'
 GO
 
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Ilość dostępnych produktów o ID ProductID w składzie o lokalizacji StockLocation',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Warehouse',
-    @level2type=N'Column',@level2name=N'UnitsInStock'
+    @level2type=N'COLUMN',@level2name=N'UnitsInStock'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data ostatniej aktualizacji stanu magazynowego dla danego produktu',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'SCHEMA',@level1name=N'Warehouse',
+    @level2type=N'COLUMN',@level2name=N'LastStockUpdate'
 GO
 
 /* Todo: opis stockdate */
@@ -354,7 +359,7 @@ EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Czas roboczy potrzebny dla produkcji produktu o ID ID',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'ProductRecipes',
-    @level2type=N'Column',@level2name=N'LabourHours'
+    @level2type=N'COLUMN',@level2name=N'LabourHours'
 GO
 
 /* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
@@ -382,5 +387,10 @@ GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([ProductID])
 REFERENCES [Products]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
+GO
+ALTER TABLE [Products]
+ADD FOREIGN KEY ([CategoryID]) REFERENCES [Categories]([ID]),
+FOREIGN KEY ([ProductRecipesID]) REFERENCES  [ProductRecipes]([ID])
 ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
