@@ -1,9 +1,9 @@
 CREATE TABLE [Customers] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
-	[CustomerDemographicsID] INTEGER,
+	[ID] INT NOT NULL IDENTITY,
+	[CustomerDemographicsID] INT,
 	[ContactName] VARCHAR(255) NOT NULL,
 	[ContactTitle] VARCHAR(255),
-	[Address] TEXT(65535) NOT NULL,
+	[Address] VARCHAR(MAX) NOT NULL,
 	[City] VARCHAR(255) NOT NULL,
 	[Region] VARCHAR(255) NOT NULL,
 	[PostalCode] VARCHAR(16) NOT NULL,
@@ -84,7 +84,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 CREATE TABLE [CustomerDemographics] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
+	[ID] INT NOT NULL IDENTITY,
 	[AgeGroup] TINYINT,
 	[HasChildren] BIT,
 	[IncomeGroup] TINYINT,
@@ -128,9 +128,9 @@ EXEC sys.sp_addextendedproperty
 GO
 
 CREATE TABLE [Orders] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
-	[CustomerID] INTEGER NOT NULL,
-	[EmployeeID] INTEGER NOT NULL,
+	[ID] INT NOT NULL IDENTITY,
+	[CustomerID] INT NOT NULL,
+	[EmployeeID] INT NOT NULL,
 	[OrderDate] DATE NOT NULL,
 	[RequiredDate] DATE,
 	[Freight] DECIMAL(10,2) NOT NULL CHECK([Freight] >= 0.00),
@@ -166,12 +166,12 @@ EXEC sys.sp_addextendedproperty
 GO
 
 CREATE TABLE [OrderDetails] (
-	[OrderID] INTEGER NOT NULL IDENTITY UNIQUE,
-	[ProductID] INTEGER NOT NULL,
+	[OrderID] INT NOT NULL,
+	[ProductID] INT NOT NULL,
 	[UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
 	[Quantity] SMALLINT NOT NULL CHECK([Quantity] > 0),
 	[Discount] DECIMAL(5,4) NOT NULL CHECK([Discount] BETWEEN 0 AND 1),
-	PRIMARY KEY([OrderID], [ProductID])
+	PRIMARY KEY([OrderID], [ProductID]),
 );
 GO
 
@@ -257,34 +257,30 @@ CREATE TABLE [Components] (
 GO
 
 CREATE TABLE [Products] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
+	[ID] INT NOT NULL IDENTITY,
 	PRIMARY KEY([ID])
 );
 GO
 
 
-ALTER TABLE [CustomerDemographics]
-ADD FOREIGN KEY([ID])
-REFERENCES [Customers]([CustomerDemographicsID])
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ALTER TABLE [Customers]
+ADD CONSTRAINT [FK_Customers_CustomerDemographics]
+    FOREIGN KEY ([CustomerDemographicsID])
+    REFERENCES [CustomerDemographics]([ID]);
 GO
 ALTER TABLE [Orders]
 ADD FOREIGN KEY([CustomerID])
-REFERENCES [Customers]([ID])
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+REFERENCES [Customers]([ID]);
 GO
 ALTER TABLE [Orders]
 ADD FOREIGN KEY([EmployeeID])
-REFERENCES [Employees]([ID])
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+REFERENCES [Employees]([ID]);
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([OrderID])
-REFERENCES [Orders]([ID])
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+REFERENCES [Orders]([ID]);
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([ProductID])
-REFERENCES [Products]([ID])
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+REFERENCES [Products]([ID]);
 GO
