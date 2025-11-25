@@ -1,6 +1,6 @@
 CREATE TABLE [Customers] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
-	[CustomerDemographicsID] INTEGER,
+	[ID] INT NOT NULL IDENTITY UNIQUE,
+	[CustomerDemographicsID] INT,
 	[ContactName] VARCHAR(255) NOT NULL,
 	[ContactTitle] VARCHAR(255),
 	[Address] TEXT(65535) NOT NULL,
@@ -84,7 +84,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 CREATE TABLE [CustomerDemographics] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
+	[ID] INT NOT NULL IDENTITY UNIQUE,
 	[AgeGroup] TINYINT,
 	[HasChildren] BIT,
 	[IncomeGroup] TINYINT,
@@ -128,9 +128,9 @@ EXEC sys.sp_addextendedproperty
 GO
 
 CREATE TABLE [Orders] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
-	[CustomerID] INTEGER NOT NULL,
-	[EmployeeID] INTEGER NOT NULL,
+	[ID] INT NOT NULL IDENTITY UNIQUE,
+	[CustomerID] INT NOT NULL,
+	[EmployeeID] INT NOT NULL,
 	[OrderDate] DATE NOT NULL,
 	[RequiredDate] DATE,
 	[Freight] DECIMAL(10,2) NOT NULL CHECK([Freight] >= 0.00),
@@ -166,8 +166,8 @@ EXEC sys.sp_addextendedproperty
 GO
 
 CREATE TABLE [OrderDetails] (
-	[OrderID] INTEGER NOT NULL IDENTITY UNIQUE,
-	[ProductID] INTEGER NOT NULL,
+	[OrderID] INT NOT NULL IDENTITY UNIQUE,
+	[ProductID] INT NOT NULL,
 	[UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
 	[Quantity] SMALLINT NOT NULL CHECK([Quantity] > 0),
 	[Discount] DECIMAL(5,4) NOT NULL CHECK([Discount] BETWEEN 0 AND 1),
@@ -257,11 +257,107 @@ CREATE TABLE [Components] (
 GO
 
 CREATE TABLE [Products] (
-	[ID] INTEGER NOT NULL IDENTITY UNIQUE,
+	[ID] INT IDENTITY,
+    [SupplierID] INT NOT NULL, 
+    [CategoryID] INT NOT NULL, 
+    ProductName VARCHAR(250) NOT NULL, 
+    QuantityPerUnit INT NOT NULL, 
+    UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
+    ProductRecipesID INT NOT NULL,
+    FOREIGN KEY ([CategoryID]) REFERENCES [Categories]([id]),
+    FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
+    FOREIGN KEY ([ProductRecipesID]) REFERENCES  [ProductRecipes]([ID]),
 	PRIMARY KEY([ID])
 );
 GO
 
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość jednostek towaru w pewnym produkcie, n.p. komplet 4 krzeseł - QuantityPerUnit = 1',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'QuantityPerUnit';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Cena towaru',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'UnitPrice';
+GO
+
+CREATE TABLE [Categories] (
+	[ID] INT IDENTITY,
+    CategoryName VARCHAR(250) NOT NULL, 
+    Description VARCHAR(250), 
+    Picture VARBINARY(MAX),
+	PRIMARY KEY([ID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela opisująca kategorie produktów, n.p. Sofy, wraz z opisem kategorii i obrazkiem',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Categories'
+GO
+
+CREATE TABLE [Warehouse] (
+	[ID] INT IDENTITY,
+    ProductID INT NOT NULL,
+    UnitsInStock INT NOT NULL,
+    /* czym ma być Stockdate? */
+    StockDate DATE,
+    StockLocation VARCHAR(150) NOT NULL,
+    FOREIGN KEY([ProductID]) REFERENCES [Products](ID),
+	PRIMARY KEY([ID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela reprezentująca każdy dostępny produkt w sklepie - w jakim miejscu się znajduje (StockLocation) oraz w jakiej ilości (UnitsInStock)',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Warehouse'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Miejsce w którym znajduje się product o id ProductID',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Warehouse',
+    @level2type=N'Column',@level2name=N'StockLocation'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość dostępnych produktów o ID ProductID w składzie o lokalizacji StockLocation',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Warehouse',
+    @level2type=N'Column',@level2name=N'UnitsInStock'
+GO
+
+/* Todo: opis stockdate */
+
+CREATE TABLE [ProductRecipes] (
+	[ID] INT IDENTITY,
+    Part1Quantity DECIMAL(10, 2) NOT NULL,
+    Part2Quantity DECIMAL(10, 2) NOT NULL,
+    Part3Quantity DECIMAL(10, 2) NOT NULL,
+    LabourHours DECIMAL(10, 2) NOT NULL,
+	PRIMARY KEY([ID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela reprezentująca ilość materiału potrzebnego do produkcji produktu o ID ID (takim samym jak PK w ProductRecipes) oraz czasu pracy który potrzeba spędzić przez pracowników, żeby ten produkt wyprodukować. Np. krzesło, 2kg drewna, 0.5kg żelaza, 6 godzin',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ProductRecipes'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Czas roboczy potrzebny dla produkcji produktu o ID ID',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ProductRecipes',
+    @level2type=N'Column',@level2name=N'LabourHours'
+GO
+
+/* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
 
 ALTER TABLE [CustomerDemographics]
 ADD FOREIGN KEY([ID])
