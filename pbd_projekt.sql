@@ -499,11 +499,112 @@ EXEC sys.sp_addextendedproperty
 GO
 
 CREATE TABLE [Products] (
-	[ID] INT NOT NULL IDENTITY,
+	[ID] INT IDENTITY,
+    [SupplierID] INT NOT NULL, 
+    [CategoryID] INT NOT NULL, 
+    ProductName VARCHAR(250) NOT NULL, 
+    QuantityPerUnit INT NOT NULL, 
+    UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
+    ProductRecipesID INT NOT NULL,
+    FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
 	PRIMARY KEY([ID])
 );
 GO
 
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość jednostek towaru w pewnym produkcie, n.p. komplet 4 krzeseł - QuantityPerUnit = 1',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'QuantityPerUnit';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Cena towaru',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'UnitPrice';
+GO
+
+CREATE TABLE [Categories] (
+	[ID] INT IDENTITY,
+    CategoryName VARCHAR(250) NOT NULL, 
+    Description VARCHAR(8000), 
+    Picture VARBINARY(MAX),
+	PRIMARY KEY([ID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela opisująca kategorie produktów, n.p. Sofy, wraz z opisem kategorii i obrazkiem',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Categories'
+GO
+
+
+CREATE TABLE [Warehouse] (
+	[ID] INT IDENTITY,
+    ProductID INT NOT NULL,
+    UnitsInStock INT NOT NULL,
+    LastStockUpdate DATETIME DEFAULT GETDATE(),
+    StockLocation VARCHAR(150) NOT NULL,
+    FOREIGN KEY([ProductID]) REFERENCES [Products](ID),
+	PRIMARY KEY([ID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela reprezentująca każdy dostępny produkt w sklepie - w jakim miejscu się znajduje (StockLocation) oraz w jakiej ilości (UnitsInStock)',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Warehouse'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Miejsce w którym znajduje się product o id ProductID',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Warehouse',
+    @level2type=N'COLUMN',@level2name=N'StockLocation'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość dostępnych produktów o ID ProductID w składzie o lokalizacji StockLocation',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Warehouse',
+    @level2type=N'COLUMN',@level2name=N'UnitsInStock'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data ostatniej aktualizacji stanu magazynowego dla danego produktu',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'SCHEMA',@level1name=N'Warehouse',
+    @level2type=N'COLUMN',@level2name=N'LastStockUpdate'
+GO
+
+/* Todo: opis stockdate */
+
+CREATE TABLE [ProductRecipes] (
+	[ID] INT IDENTITY,
+    Part1Quantity DECIMAL(10, 2) NOT NULL,
+    Part2Quantity DECIMAL(10, 2) NOT NULL,
+    Part3Quantity DECIMAL(10, 2) NOT NULL,
+    LabourHours DECIMAL(10, 2) NOT NULL,
+	PRIMARY KEY([ID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela reprezentująca ilość materiału potrzebnego do produkcji produktu o ID ID (takim samym jak PK w ProductRecipes) oraz czasu pracy który potrzeba spędzić przez pracowników, żeby ten produkt wyprodukować. Np. krzesło, 2kg drewna, 0.5kg żelaza, 6 godzin',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ProductRecipes'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Czas roboczy potrzebny dla produkcji produktu o ID ID',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ProductRecipes',
+    @level2type=N'COLUMN',@level2name=N'LabourHours'
+GO
+
+/* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
 
 ALTER TABLE [Customers]
 ADD CONSTRAINT [FK_Customers_CustomerDemographics]
@@ -525,4 +626,9 @@ GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([ProductID])
 REFERENCES [Products]([ID]);
+GO
+ALTER TABLE [Products]
+ADD FOREIGN KEY ([CategoryID]) REFERENCES [Categories]([ID]),
+FOREIGN KEY ([ProductRecipesID]) REFERENCES  [ProductRecipes]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
