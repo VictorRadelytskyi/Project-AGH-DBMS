@@ -6,7 +6,7 @@
 --	dbo.fn_CustomerNetSalesInPeriod(1, '2023-01-01', '2023-12-31') AS NetSales2023;
 
 -- Helper:
---SELECT c.ID cid, o.ID oid, o.CustomerID, (od.Quantity * od.UnitPrice), o.OrderDate FROM Customers c, Orders o, OrderDetails od WHERE c.ID = o.CustomerID AND o.ID = od.OrderID 
+-- SELECT * FROM dbo.fn_CustomerOrdersInPeriod(3, '2023-01-01', '2023-12-31');
 
 
 CREATE FUNCTION dbo.fn_CustomerNetSalesInPeriod (
