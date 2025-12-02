@@ -1,6 +1,6 @@
 -- Customer Order History View
 
--- Prints the order history grouped by customers and contacts.
+-- Prints the order history grouped by customers, contacts and period.
 -- Additional data include first and last order dates, order amounts, discounts, financial data.
 
 CREATE VIEW vw_CustomerOrderHistory
@@ -10,9 +10,8 @@ SELECT
 	c.ContactName,
 	MIN(o.OrderDate)												AS FirstOrderDate,
 	MAX(o.OrderDate)												AS LastOrderDate,
---	DATEPART(YEAR,	o.OrderDate)										AS OrderYear,
---	DATEPART(MONTH,	o.OrderDate)										AS OrderMonth,
---	DATEPART(WEEK,	o.OrderDate)										AS OrderWeek,
+	DATEPART(YEAR,	o.OrderDate)										AS OrderYear,
+	DATEPART(MONTH,	o.OrderDate)										AS OrderMonth,
 	COUNT(DISTINCT o.ID)												AS AmountOfOrders,
 	COUNT(od.ProductID)													AS UniqueProductsOrdered,
 	SUM(od.Quantity)													AS TotalUnitsOrdered,
@@ -29,7 +28,6 @@ LEFT JOIN OrderDetails od
 GROUP BY
 	o.CustomerID,
 	c.ContactName
---	DATEPART(YEAR,	o.OrderDate),
---	DATEPART(MONTH,	o.OrderDate),
---	DATEPART(WEEK,	o.OrderDate);
+	DATEPART(YEAR,	o.OrderDate),
+	DATEPART(MONTH,	o.OrderDate),
 GO
