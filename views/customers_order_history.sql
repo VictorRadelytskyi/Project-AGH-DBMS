@@ -1,3 +1,8 @@
+-- Customer Order History View
+
+-- Prints the order history grouped by customers and contacts.
+-- Additional data include first and last order dates, order amounts, discounts, financial data.
+
 CREATE VIEW vw_CustomerOrderHistory
 AS
 SELECT
