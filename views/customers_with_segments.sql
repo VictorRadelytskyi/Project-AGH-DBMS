@@ -1,3 +1,7 @@
+-- Customers With Segments View
+
+-- Prints a list of customers grouped by their demographic data including age, income, residency, children and other data.
+
 CREATE VIEW vw_CustomersWithSegments
 AS
 SELECT 
