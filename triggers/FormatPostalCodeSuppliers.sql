@@ -1,4 +1,4 @@
-CREATE TRIGGER FormatPostalCode ON Employees
+CREATE TRIGGER FormatPostalCode ON Suppliers
 AFTER INSERT, UPDATE
 AS
 BEGIN
@@ -13,9 +13,9 @@ BEGIN
     )
         THROW 51000, 'Kod pocztowy musi mieć co najmniej 5 znaków (po usunięciu spacji i myślników).', 1;
 
-    UPDATE e
+    UPDATE s
     SET PostalCode = REPLACE(REPLACE(i.PostalCode, '-', ''), ' ', '')
-    FROM Employees e
-    INNER JOIN inserted i ON e.ID = i.ID;
+    FROM Suppliers s
+    INNER JOIN inserted i ON s.ID = i.ID;
 END;
 GO
