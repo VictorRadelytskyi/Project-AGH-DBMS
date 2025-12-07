@@ -583,19 +583,49 @@ GO
 /* Todo: opis stockdate */
 
 CREATE TABLE [ProductRecipes] (
-	[ID] INT IDENTITY,
-    Part1Quantity DECIMAL(10, 2) NOT NULL,
-    Part2Quantity DECIMAL(10, 2) NOT NULL,
-    Part3Quantity DECIMAL(10, 2) NOT NULL,
-    LabourHours DECIMAL(10, 2) NOT NULL,
-	PRIMARY KEY([ID])
+	[ID] INT IDENTITY PRIMARY KEY,
+    [RecipeName] VARCHAR(255), -- np. "Montaż krzesła" 
+    [LabourHours] DECIMAL(10, 2) NOT NULL CHECK([LabourHours] >= 0)
 );
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Tabela reprezentująca ilość materiału potrzebnego do produkcji produktu o ID ID (takim samym jak PK w ProductRecipes) oraz czasu pracy który potrzeba spędzić przez pracowników, żeby ten produkt wyprodukować. Np. krzesło, 2kg drewna, 0.5kg żelaza, 6 godzin',
+    @name=N'MS_Description', @value=N'Nagłówek procesu produkcyjnego. Określa czas pracy potrzebny na wykonanie produktu.',
     @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'ProductRecipes'
+    @level1type=N'TABLE',@level1name=N'ProductRecipes';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Czas roboczy (w godzinach) potrzebny pracownikom na wytworzenie 1 sztuki produktu.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ProductRecipes',
+    @level2type=N'COLUMN',@level2name=N'LabourHours';
+GO
+
+CREATE TABLE [RecipeIngredients] (
+    [ID] INT IDENTITY PRIMARY KEY,
+    [ProductRecipeID] INT NOT NULL,
+    [ComponentID] INT NOT NULL,
+    [QuantityRequired] DECIMAL(10, 2) NOT NULL CHECK([QuantityRequired] > 0),
+
+    CONSTRAINT [FK_RecipeIngredients_Recipe] FOREIGN KEY ([ProductRecipeID]) REFERENCES [ProductRecipes]([ID]),
+    CONSTRAINT [FK_RecipeIngredients_Component] FOREIGN KEY ([ComponentID]) REFERENCES [Components]([ID]),
+    
+    CONSTRAINT [UQ_Recipe_Component] UNIQUE ([ProductRecipeID], [ComponentID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela łącząca (Junction Table) definiująca listę materiałową (BOM). Określa jakie komponenty i w jakiej ilości są potrzebne do konkretnego przepisu.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'RecipeIngredients';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość danego komponentu wymagana do wytworzenia produktu.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'RecipeIngredients',
+    @level2type=N'COLUMN',@level2name=N'QuantityRequired';
 GO
 
 EXEC sys.sp_addextendedproperty
@@ -605,32 +635,52 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'LabourHours'
 GO
 
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Pracownik odpowiadający za kontakt z klientem i sprzedaż',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'DealerEmployeeID'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Pracownik odpowiadający za wyprodukowanie zamówienia klienta',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'AssemblerEmployeeID'
+GO
+
 /* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
 
 ALTER TABLE [Customers]
 ADD CONSTRAINT [FK_Customers_CustomerDemographics]
     FOREIGN KEY ([CustomerDemographicsID])
-    REFERENCES [CustomerDemographics]([ID]);
+    REFERENCES [CustomerDemographics]([ID])
+    ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Orders]
 ADD FOREIGN KEY([CustomerID])
-REFERENCES [Customers]([ID]);
+REFERENCES [Customers]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Orders]
 ADD FOREIGN KEY([DealerEmployeeID])
-REFERENCES [Employees]([ID]);
+REFERENCES [Employees]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;;
 GO
 ALTER TABLE [Orders]
 ADD FOREIGN KEY([AssemblerEmployeeID])
-REFERENCES [Employees]([ID]);
+REFERENCES [Employees]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;;
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([OrderID])
-REFERENCES [Orders]([ID]);
+REFERENCES [Orders]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([ProductID])
-REFERENCES [Products]([ID]);
+REFERENCES [Products]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Products]
 ADD FOREIGN KEY ([CategoryID]) REFERENCES [Categories]([ID]),
