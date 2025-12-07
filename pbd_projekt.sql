@@ -11,7 +11,6 @@ CREATE TABLE [Customers] (
 	[PhoneNumber] VARCHAR(32) NOT NULL,
 	[Fax] VARCHAR(32),
 	[NIP] VARCHAR(10),
-	[VATMultipler] DECIMAL(4,2),
 	PRIMARY KEY([ID])
 );
 GO
@@ -502,12 +501,13 @@ GO
 
 CREATE TABLE [Products] (
 	[ID] INT IDENTITY,
-    [SupplierID] INT NOT NULL, 
-    [CategoryID] INT NOT NULL, 
-    ProductName VARCHAR(250) NOT NULL, 
-    QuantityPerUnit INT NOT NULL, 
-    UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
-    ProductRecipesID INT NOT NULL,
+	[SupplierID] INT NOT NULL, 
+	[CategoryID] INT NOT NULL, 
+	ProductName VARCHAR(250) NOT NULL, 
+	QuantityPerUnit INT NOT NULL, 
+	UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
+	ProductRecipesID INT NOT NULL,
+	[VATMultipler] DECIMAL(4,2) NOT NULL,
     FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
 	PRIMARY KEY([ID])
 );
