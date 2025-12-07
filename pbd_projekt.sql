@@ -609,23 +609,28 @@ GO
 ALTER TABLE [Customers]
 ADD CONSTRAINT [FK_Customers_CustomerDemographics]
     FOREIGN KEY ([CustomerDemographicsID])
-    REFERENCES [CustomerDemographics]([ID]);
+    REFERENCES [CustomerDemographics]([ID])
+    ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Orders]
 ADD FOREIGN KEY([CustomerID])
-REFERENCES [Customers]([ID]);
+REFERENCES [Customers]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Orders]
 ADD FOREIGN KEY([EmployeeID])
-REFERENCES [Employees]([ID]);
+REFERENCES [Employees]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([OrderID])
-REFERENCES [Orders]([ID]);
+REFERENCES [Orders]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([ProductID])
-REFERENCES [Products]([ID]);
+REFERENCES [Products]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Products]
 ADD FOREIGN KEY ([CategoryID]) REFERENCES [Categories]([ID]),
