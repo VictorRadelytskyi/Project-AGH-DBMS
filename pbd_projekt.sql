@@ -130,7 +130,8 @@ GO
 CREATE TABLE [Orders] (
 	[ID] INT NOT NULL IDENTITY,
 	[CustomerID] INT NOT NULL,
-	[EmployeeID] INT NOT NULL,
+	[DealerEmployeeID] INT NOT NULL,
+	[AssemblerEmployeeID] INT NOT NULL,
 	[OrderDate] DATE NOT NULL,
 	[RequiredDate] DATE,
 	[Freight] DECIMAL(10,2) NOT NULL CHECK([Freight] >= 0.00),
@@ -616,7 +617,11 @@ ADD FOREIGN KEY([CustomerID])
 REFERENCES [Customers]([ID]);
 GO
 ALTER TABLE [Orders]
-ADD FOREIGN KEY([EmployeeID])
+ADD FOREIGN KEY([DealerEmployeeID])
+REFERENCES [Employees]([ID]);
+GO
+ALTER TABLE [Orders]
+ADD FOREIGN KEY([AssemblerEmployeeID])
 REFERENCES [Employees]([ID]);
 GO
 ALTER TABLE [OrderDetails]
