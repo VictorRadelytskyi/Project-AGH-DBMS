@@ -10,6 +10,8 @@ CREATE TABLE [Customers] (
 	[Country] VARCHAR(255) NOT NULL,
 	[PhoneNumber] VARCHAR(32) NOT NULL,
 	[Fax] VARCHAR(32),
+	[NIP] VARCHAR(10),
+	[VATMultipler] DECIMAL(4,2),
 	PRIMARY KEY([ID])
 );
 GO
