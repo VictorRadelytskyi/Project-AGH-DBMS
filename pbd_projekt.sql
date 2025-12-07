@@ -582,19 +582,49 @@ GO
 /* Todo: opis stockdate */
 
 CREATE TABLE [ProductRecipes] (
-	[ID] INT IDENTITY,
-    Part1Quantity DECIMAL(10, 2) NOT NULL,
-    Part2Quantity DECIMAL(10, 2) NOT NULL,
-    Part3Quantity DECIMAL(10, 2) NOT NULL,
-    LabourHours DECIMAL(10, 2) NOT NULL,
-	PRIMARY KEY([ID])
+	[ID] INT IDENTITY PRIMARY KEY,
+    [RecipeName] VARCHAR(255), -- np. "Montaż krzesła" 
+    [LabourHours] DECIMAL(10, 2) NOT NULL CHECK([LabourHours] >= 0)
 );
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Tabela reprezentująca ilość materiału potrzebnego do produkcji produktu o ID ID (takim samym jak PK w ProductRecipes) oraz czasu pracy który potrzeba spędzić przez pracowników, żeby ten produkt wyprodukować. Np. krzesło, 2kg drewna, 0.5kg żelaza, 6 godzin',
+    @name=N'MS_Description', @value=N'Nagłówek procesu produkcyjnego. Określa czas pracy potrzebny na wykonanie produktu.',
     @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'ProductRecipes'
+    @level1type=N'TABLE',@level1name=N'ProductRecipes';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Czas roboczy (w godzinach) potrzebny pracownikom na wytworzenie 1 sztuki produktu.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ProductRecipes',
+    @level2type=N'COLUMN',@level2name=N'LabourHours';
+GO
+
+CREATE TABLE [RecipeIngredients] (
+    [ID] INT IDENTITY PRIMARY KEY,
+    [ProductRecipeID] INT NOT NULL,
+    [ComponentID] INT NOT NULL,
+    [QuantityRequired] DECIMAL(10, 2) NOT NULL CHECK([QuantityRequired] > 0),
+
+    CONSTRAINT [FK_RecipeIngredients_Recipe] FOREIGN KEY ([ProductRecipeID]) REFERENCES [ProductRecipes]([ID]),
+    CONSTRAINT [FK_RecipeIngredients_Component] FOREIGN KEY ([ComponentID]) REFERENCES [Components]([ID]),
+    
+    CONSTRAINT [UQ_Recipe_Component] UNIQUE ([ProductRecipeID], [ComponentID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Tabela łącząca (Junction Table) definiująca listę materiałową (BOM). Określa jakie komponenty i w jakiej ilości są potrzebne do konkretnego przepisu.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'RecipeIngredients';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość danego komponentu wymagana do wytworzenia produktu.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'RecipeIngredients',
+    @level2type=N'COLUMN',@level2name=N'QuantityRequired';
 GO
 
 EXEC sys.sp_addextendedproperty
