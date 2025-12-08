@@ -20,7 +20,6 @@ EXEC sp_ManufactureProduct
 	@ProductID = 1, 
 	@Quantity = 50,
 	@TargetLocation = 'Zone-A-Rack-1';
-    ============================================================================
 */
 
 CREATE OR ALTER PROCEDURE [dbo].[sp_ManufactureProduct]
