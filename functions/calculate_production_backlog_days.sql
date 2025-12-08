@@ -16,7 +16,7 @@ SELECT dbo.fn_CalculateProductionBacklogDays() AS ProductionDaysLeft;
 
 */
 
-CREATE FUNCTION [dbo].[fn_CalculateProductionBacklogDays] ()
+CREATE FUNCTION dbo.fn_CalculateProductionBacklogDays ()
 RETURNS DECIMAL(10, 2)
 AS
 BEGIN
