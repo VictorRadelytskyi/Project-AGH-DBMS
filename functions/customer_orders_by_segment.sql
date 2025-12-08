@@ -4,13 +4,13 @@
 -- Usage:
 
 -- clients who are high earners
-SELECT * FROM dbo.fn_CustomersBySegment(NULL, 3, NULL, NULL);
+-- SELECT * FROM dbo.fn_CustomersBySegment(NULL, 3, NULL, NULL);
 
 -- clients with kids who live in a city
-SELECT * FROM dbo.fn_CustomersBySegment(NULL, NULL, 1, 1);
+-- SELECT * FROM dbo.fn_CustomersBySegment(NULL, NULL, 1, 1);
 
 
-CREATE FUNCTION fn_CustomersBySegment (
+CREATE FUNCTION dbo.fn_CustomersBySegment (
 	@AgeGroup		INT		= NULL,
 	@IncomeGroup	INT		= NULL,
 	@HasChildren	BIT		= NULL,
