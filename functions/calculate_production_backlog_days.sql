@@ -24,11 +24,11 @@ BEGIN
     DECLARE @TotalDailyCapacity DECIMAL(10, 2);
 
     SELECT @TotalLabourHoursNeeded = SUM(dbo.fn_EstimateManHours(ProductID, Quantity))
-    FROM [dbo].[OrderDetails];
+    FROM [OrderDetails];
 
     SELECT @TotalDailyCapacity = SUM(ep.ProductivityFactor * 7.00)
-    FROM [dbo].[Employees] e
-    INNER JOIN [dbo].[EmployeePositions] ep ON e.EmployeePositionID = ep.ID
+    FROM [Employees] e
+    INNER JOIN [EmployeePositions] ep ON e.EmployeePositionID = ep.ID
     WHERE ep.ProductivityFactor > 0;
 
     IF @TotalLabourHoursNeeded = 0 RETURN 0.00;
