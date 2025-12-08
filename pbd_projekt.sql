@@ -183,7 +183,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena jednostkowa produktu',
+    @name=N'MS_Description', @value=N'Cena jednostkowa netto produktu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'OrderDetails',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
@@ -479,7 +479,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Jednostkowa cena zakupu danego komponentu',
+    @name=N'MS_Description', @value=N'Jednostkowa cena zakupu netto danego komponentu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Components',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
@@ -521,7 +521,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena towaru',
+    @name=N'MS_Description', @value=N'Cena towaru netto',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Products',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
