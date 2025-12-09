@@ -5,17 +5,18 @@ CREATE PROCEDURE UpdateProduct
 @ProductName VARCHAR(250) NOT NULL, 
 @QuantityPerUnit INT NOT NULL, 
 @UnitPrice DECIMAL(10, 2) NOT NULL, 
-@ProductRecipesID INT NOT NULL
+@ProductRecipesID INT NOT NULL,
+@VATMultiplier DECIMAL(4,2) NOT NULL
 AS 
 BEGIN
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
 BEGIN TRY 
     BEGIN TRAN UpdateProduct
-        IF @QuantityPerUnit <= 0 OR @UnitPrice <= 0
+        IF @QuantityPerUnit <= 0 OR @UnitPrice <= 0 OR @VATMultiplier <=0
         BEGIN 
             ROLLBACK TRAN UpdateProduct;
-            THROW 51000, N'QuantityPerUnit oraz UnitPrice powinny być dodatnie', 1;
+            THROW 51000, N'QuantityPerUnit, UnitPrice oraz VATMultiplier powinny być dodatnie', 1;
             RETURN;
         END
 
@@ -25,7 +26,8 @@ BEGIN TRY
         ProductName = @ProductName,
         QuantityPerUnit = @QuantityPerUnit,
         UnitPrice = @UnitPrice,
-        ProductRecipesID = @ProductRecipesID
+        ProductRecipesID = @ProductRecipesID,
+        VATMultiplier = @VATMultiplier
         WHERE ID = @ID
 
     IF @@ROWCOUNT = 0

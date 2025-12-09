@@ -5,6 +5,7 @@ CREATE PROCEDURE AddProduct
 @QuantityPerUnit INT NOT NULL, 
 @UnitPrice DECIMAL(10, 2) NOT NULL, 
 @ProductRecipesID INT NOT NULL,
+@VATMultiplier DECIMAL(4,2) NOT NULL,
 @ID INT OUTPUT
 AS
 BEGIN
@@ -12,10 +13,10 @@ SET NOCOUNT ON;
 SET XACT_ABORT ON;
 BEGIN TRY
     BEGIN TRAN AddProduct
-        IF @UnitPrice <= 0
+        IF @UnitPrice <= 0 OR @VATMultiplier <= 0 OR @QuantityPerUnit <= 0 
         BEGIN
             ROLLBACK TRAN AddProduct; 
-            THROW 51000, 'Cena jednostkowa musi być większa niż zero.', 1;
+            THROW 51000, 'Cena jednostkowa, QuantityPerUnit oraz VATMultiplier musszą być dodatnie', 1;
             RETURN;
         END
 
@@ -25,14 +26,16 @@ BEGIN TRY
             ProductName,
             QuantityPerUnit,
             UnitPrice,
-            ProductRecipesID
+            ProductRecipesID,
+            VATMultiplier
         ) VALUES(
             @SupplierID,
             @CategoryID,
             @ProductName,
             @QuantityPerUnit,
             @UnitPrice,
-            @ProductRecipesID
+            @ProductRecipesID,
+            @VATMultiplier
         )
         
         SET @ID = CAST(SCOPE_IDENTITY() AS INT);
