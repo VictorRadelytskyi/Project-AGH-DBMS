@@ -462,7 +462,6 @@ CREATE TABLE [Components] (
     [ComponentType] VARCHAR(255) NOT NULL,
     [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
     [UnitsInStock] INT NOT NULL DEFAULT 0 CHECK([UnitsInStock] >= 0), 
-    [LeadTime] SMALLINT DEFAULT -1 CHECK([LeadTime] >= 0 OR [LeadTime] = -1),
     CONSTRAINT [FK_Components_SupplierID] FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID])
 );
 GO
@@ -506,13 +505,6 @@ EXEC sys.sp_addextendedproperty
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Components',
     @level2type=N'COLUMN',@level2name=N'UnitsInStock';
-GO
-
-EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Czas w dniach, w którym firma jest w stanie zakupić dodatkową ilość danego komponentu. -1 jezeli czas jest nieznany lub komponent wycofany z produkcji i nie da się go już zamówić',
-    @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'Components',
-    @level2type=N'COLUMN',@level2name=N'LeadTime';
 GO
 
 CREATE TABLE [Products] (
