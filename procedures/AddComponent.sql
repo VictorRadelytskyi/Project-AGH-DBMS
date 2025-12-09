@@ -4,7 +4,6 @@ CREATE PROCEDURE AddComponent @supplierID INT,
 @componentType varchar(255),
 @unitPrice decimal(10,2),
 @unitsInStock int,
-@leadTime smallint = NULL,
 @ID INT OUTPUT
 AS 
 BEGIN
@@ -18,8 +17,7 @@ BEGIN TRY
                 ComponentName,
                 ComponentType,
                 UnitPrice,
-                UnitsInStock,
-                LeadTime
+                UnitsInStock
             )
             VALUES (
                 @supplierID,
@@ -27,7 +25,6 @@ BEGIN TRY
                 @componentType,
                 @unitPrice,
                 @unitsInStock,
-                @leadTime
             )
 
         SET @ID = CAST(SCOPE_IDENTITY() AS INT);
