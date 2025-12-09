@@ -140,6 +140,15 @@ CREATE TABLE [Orders] (
 );
 GO
 
+ALTER TABLE [Orders]
+ADD CONSTRAINT [CK_Orders_fulfillmentDates] 
+CHECK ([FulfillmentFinish] >= [FulfillmentStart]);
+
+
+ALTER TABLE [Orders]
+ADD CONSTRAINT [CK_Orders_FulfillmentStart_vs_OrderDate] 
+CHECK ([FulfillmentStart] >= [OrderDate]);
+
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Lista zamówień',
     @level0type=N'SCHEMA',@level0name=N'dbo',
