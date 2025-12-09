@@ -440,13 +440,9 @@ GO
 
 CREATE TABLE [Components] (
     [ID] INT NOT NULL IDENTITY PRIMARY KEY,
-    [SupplierID] INT,
     [ComponentName] VARCHAR(255) NOT NULL,
     [ComponentType] VARCHAR(255) NOT NULL,
-    [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
-    [UnitsInStock] INT NOT NULL DEFAULT 0 CHECK([UnitsInStock] >= 0), 
-    [LeadTime] SMALLINT DEFAULT -1 CHECK([LeadTime] >= 0 OR [LeadTime] = -1),
-    CONSTRAINT [FK_Components_SupplierID] FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID])
+    [LeadTime] SMALLINT DEFAULT -1 CHECK([LeadTime] >= 0 OR [LeadTime] = -1)
 );
 GO
 
@@ -454,13 +450,6 @@ EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Lista komponentów (półproduktów) używanych do produkcji',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Components';
-GO
-
-EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Klucz obcy wskazujący na konkretnego dostawcę w tabeli Suppliers',
-    @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'Components',
-    @level2type=N'COLUMN',@level2name=N'SupplierID';
 GO
 
 EXEC sys.sp_addextendedproperty
@@ -478,24 +467,63 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Jednostkowa cena zakupu danego komponentu',
-    @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'Components',
-    @level2type=N'COLUMN',@level2name=N'UnitPrice';
-GO
-
-EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Liczba komponentów dostępnych w magazynie firmy, gotowych do wykorzystania do produkcji w czasie ~0',
-    @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'Components',
-    @level2type=N'COLUMN',@level2name=N'UnitsInStock';
-GO
-
-EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Czas w dniach, w którym firma jest w stanie zakupić dodatkową ilość danego komponentu. -1 jezeli czas jest nieznany lub komponent wycofany z produkcji i nie da się go już zamówić',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Components',
     @level2type=N'COLUMN',@level2name=N'LeadTime';
+GO
+
+CREATE TABLE [ComponentsInventory] (
+    [ID] INT NOT NULL IDENTITY PRIMARY KEY,
+    [ComponentID] INT,
+    [SupplierID] INT,
+    [InventoryDate] DATE DEFAULT GETDATE(),
+    [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
+    [UnitsInStock] INT NOT NULL DEFAULT 0 CHECK([UnitsInStock] >= 0), 
+    CONSTRAINT [FK_ComponentsInventory_ComponentID] FOREIGN KEY ([ComponentID]) REFERENCES [Components]([ID]),
+    CONSTRAINT [FK_ComponentsInventory_SupplierID] FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID])
+);
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Lista stanów magazynowych dla komponentów (półproduktów) używanych do produkcji',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Klucz obcy wskazujący na konkretny komponent w tabeli Components',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'ComponentID';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Klucz obcy wskazujący na konkretnego dostawcę w tabeli Suppliers',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'SupplierID';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data dodania danej pratii danego komponentu do magazynu',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'InventoryDate';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Cena jednostkowa po jakiej firma zakupiła komponent w danej partii',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'UnitPrice';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość komponentów dostępnych w magazynie dla danej pratii. Przy każdym użyciu liczba ta jest pomniejszana o ilość zużytych komponentów',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'UnitsInStock';
 GO
 
 CREATE TABLE [Products] (
