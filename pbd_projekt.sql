@@ -132,6 +132,8 @@ CREATE TABLE [Orders] (
 	[CustomerID] INT NOT NULL,
 	[EmployeeID] INT NOT NULL,
 	[OrderDate] DATE NOT NULL,
+	[FulfillmentStart] DATETIME2(0),
+	[FulfillmentFinish] DATETIME2(0),
 	[RequiredDate] DATE,
 	[Freight] DECIMAL(10,2) NOT NULL CHECK([Freight] >= 0.00),
 	PRIMARY KEY([ID])
@@ -149,6 +151,20 @@ EXEC sys.sp_addextendedproperty
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Orders',
     @level2type=N'COLUMN',@level2name=N'OrderDate';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data rozpoczęcia obsługi zamówienia.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'FulfillmentStart';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data zakończenia obsługi zamówienia. (Zamówienie gotowe do wysyłki/odbioru przez klienta)',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'FulfillmentFinish';
 GO
 
 EXEC sys.sp_addextendedproperty
