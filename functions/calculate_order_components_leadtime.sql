@@ -1,6 +1,4 @@
 /*
-WIP version
-
 fn_CalculateOrderComponentsLeadtime
 
 Calculates how many working days are required
@@ -9,8 +7,11 @@ ProductRecipeID and OrderQuantity
 
 Logic:
 
-1. Get ComponentID of those with not enough TOTAL units in stock
-2. Get MAX of the LeadTimes of all Components from point 1
+1. Get ComponentID of those in the RecipeID
+2. For each Component check LeadTime
+3. Get sum of all stocks of the ComponentID in ComponentsInventory
+4. If total stock of the component < RequiredQuantity then include its LeadTime in calculation
+5. Return MAX of all included LeadTimes
 
 Usage:
 SELECT dbo.fn_CalculateOrderComponentsLeadtime(1, 50) AS [Czas Oczekiwania na Komponenty (Dni)]
@@ -29,8 +30,10 @@ BEGIN
     SELECT @MaxLeadTime = MAX(c.LeadTime)
     FROM RecipeIngredients ri
     JOIN Components c on c.ID = ri.ComponentID
+    CROSS APPLY dbo.fn_CalculateComponentStock(c.ID) AS StockData
     WHERE ri.ProductRecipeID = @ProductRecipeID
-    AND (ri.QuantityRequired * @OrderQuantity) > c.UnitsInStock -- tutaj do przegadania logika dostępności komponentów
+        -- check components availability in stock
+        AND (ri.QuantityRequired * @OrderQuantity) > StockData.TotalStock
 
     RETURN ISNULL(@MaxLeadTime, 0)
 
