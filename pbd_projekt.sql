@@ -106,6 +106,10 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'AgeGroup';
 GO
 
+ALTER TABLE [CustomerDemographics]
+ADD CONSTRAINT [CK_CustomerDemographics_AgeGroup] 
+CHECK ([AgeGroup] BETWEEN 1 AND 5);
+
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Czy ma dzieci',
     @level0type=N'SCHEMA',@level0name=N'dbo',
@@ -119,6 +123,10 @@ EXEC sys.sp_addextendedproperty
     @level1type=N'TABLE',@level1name=N'CustomerDemographics',
     @level2type=N'COLUMN',@level2name=N'IncomeGroup';
 GO
+
+ALTER TABLE [CustomerDemographics]
+ADD CONSTRAINT [CK_CustomerDemographics_IncomeGroup] 
+CHECK ([IncomeGroup] IN (1, 2, 3));
 
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Czy jest mieszkańcem miasta',
