@@ -15,4 +15,5 @@ BEGIN
         ROLLBACK TRAN;
         THROW 51000, 'Nie można zatrudnić niepełnoletniego pracownika!!', 1;
     
-END
+END;
+GO
