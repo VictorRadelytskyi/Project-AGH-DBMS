@@ -15,4 +15,5 @@ BEGIN
         ROLLBACK TRAN;
         THROW 51000, 'Pracownik nie może być swoim własnym podwładnym!', 1;
     
-END
+END;
+GO
