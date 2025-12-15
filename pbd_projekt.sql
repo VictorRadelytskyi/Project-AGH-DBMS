@@ -485,7 +485,7 @@ GO
 
 CREATE TABLE [ComponentsInventory] (
     [ID] INT NOT NULL IDENTITY PRIMARY KEY,
-    [ComponentID] INT,
+    [ComponentID] INT NOT NULL,
     [InventoryDate] DATETIME DEFAULT GETDATE(),
     [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
     [UnitsInStock] INT NOT NULL DEFAULT 0 CHECK([UnitsInStock] >= 0), 
