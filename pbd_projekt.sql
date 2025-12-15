@@ -515,7 +515,7 @@ CREATE TABLE [Products] (
     [SupplierID] INT NOT NULL, 
     [CategoryID] INT NOT NULL, 
     ProductName VARCHAR(250) NOT NULL, 
-    QuantityPerUnit INT NOT NULL, 
+    QuantityPerUnit INT NOT NULL CHECK([QuantityPerUnit] > 0), 
     UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
     ProductRecipesID INT NOT NULL,
     FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
@@ -556,7 +556,7 @@ GO
 CREATE TABLE [Warehouse] (
 	[ID] INT IDENTITY,
     ProductID INT NOT NULL,
-    UnitsInStock INT NOT NULL,
+    UnitsInStock INT NOT NULL CHECK([UnitsInStock] >= 0),
     LastStockUpdate DATETIME DEFAULT GETDATE(),
     StockLocation VARCHAR(150) NOT NULL,
     FOREIGN KEY([ProductID]) REFERENCES [Products](ID),
