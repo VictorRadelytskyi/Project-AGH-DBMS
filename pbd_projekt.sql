@@ -643,8 +643,6 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'LastStockUpdate'
 GO
 
-/* Todo: opis stockdate */
-
 CREATE TABLE [ProductRecipes] (
 	[ID] INT IDENTITY PRIMARY KEY,
     [RecipeName] VARCHAR(255), -- np. "Montaż krzesła" 
@@ -697,8 +695,6 @@ EXEC sys.sp_addextendedproperty
     @level1type=N'TABLE',@level1name=N'ProductRecipes',
     @level2type=N'COLUMN',@level2name=N'LabourHours'
 GO
-
-/* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
 
 ALTER TABLE [Customers]
 ADD CONSTRAINT [FK_Customers_CustomerDemographics]
