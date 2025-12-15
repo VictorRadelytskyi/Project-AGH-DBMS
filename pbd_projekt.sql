@@ -441,7 +441,7 @@ GO
 
 CREATE TABLE [Components] (
     [ID] INT NOT NULL IDENTITY PRIMARY KEY,
-    [SupplierID] INT,
+    [SupplierID] INT NOT NULL,
     [ComponentName] VARCHAR(255) NOT NULL,
     [ComponentType] VARCHAR(255) NOT NULL,
     [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
