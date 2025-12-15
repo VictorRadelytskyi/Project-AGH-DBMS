@@ -10,6 +10,7 @@ CREATE TABLE [Customers] (
 	[Country] VARCHAR(255) NOT NULL,
 	[PhoneNumber] VARCHAR(32) NOT NULL,
 	[Fax] VARCHAR(32),
+	[NIP] VARCHAR(10),
 	PRIMARY KEY([ID])
 );
 GO
@@ -182,7 +183,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena jednostkowa produktu',
+    @name=N'MS_Description', @value=N'Cena jednostkowa netto produktu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'OrderDetails',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
@@ -528,12 +529,13 @@ GO
 
 CREATE TABLE [Products] (
 	[ID] INT IDENTITY,
-    [SupplierID] INT NOT NULL, 
-    [CategoryID] INT NOT NULL, 
-    ProductName VARCHAR(250) NOT NULL, 
-    QuantityPerUnit INT NOT NULL, 
-    UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
-    ProductRecipesID INT NOT NULL,
+	[SupplierID] INT NOT NULL, 
+	[CategoryID] INT NOT NULL, 
+	ProductName VARCHAR(250) NOT NULL, 
+	QuantityPerUnit INT NOT NULL, 
+	UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
+	ProductRecipesID INT NOT NULL,
+	[VATMultipler] DECIMAL(4,2) NOT NULL,
     FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
 	PRIMARY KEY([ID])
 );
@@ -547,7 +549,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena towaru',
+    @name=N'MS_Description', @value=N'Cena towaru netto',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Products',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
