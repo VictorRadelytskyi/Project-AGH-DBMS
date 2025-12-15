@@ -10,6 +10,7 @@ CREATE TABLE [Customers] (
 	[Country] VARCHAR(255) NOT NULL,
 	[PhoneNumber] VARCHAR(32) NOT NULL,
 	[Fax] VARCHAR(32),
+	[NIP] VARCHAR(10),
 	PRIMARY KEY([ID])
 );
 GO
@@ -140,6 +141,8 @@ CREATE TABLE [Orders] (
 	[CustomerID] INT NOT NULL,
 	[EmployeeID] INT NOT NULL,
 	[OrderDate] DATE NOT NULL,
+	[FulfillmentStart] DATETIME2(0),
+	[FulfillmentFinish] DATETIME2(0),
 	[RequiredDate] DATE,
 	[Freight] DECIMAL(10,2) NOT NULL CHECK([Freight] >= 0.00),
 	PRIMARY KEY([ID])
@@ -147,8 +150,13 @@ CREATE TABLE [Orders] (
 GO
 
 ALTER TABLE [Orders]
-ADD CONSTRAINT [CK_Orders_RequiredDate] 
-CHECK ([RequiredDate] >= [OrderDate]);
+ADD CONSTRAINT [CK_Orders_fulfillmentDates] 
+CHECK ([FulfillmentFinish] >= [FulfillmentStart]);
+
+
+ALTER TABLE [Orders]
+ADD CONSTRAINT [CK_Orders_FulfillmentStart_vs_OrderDate] 
+CHECK ([FulfillmentStart] >= [OrderDate]);
 
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Lista zamówień',
@@ -161,6 +169,20 @@ EXEC sys.sp_addextendedproperty
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Orders',
     @level2type=N'COLUMN',@level2name=N'OrderDate';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data rozpoczęcia obsługi zamówienia.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'FulfillmentStart';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data zakończenia obsługi zamówienia. (Zamówienie gotowe do wysyłki/odbioru przez klienta)',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'FulfillmentFinish';
 GO
 
 EXEC sys.sp_addextendedproperty
@@ -182,6 +204,7 @@ CREATE TABLE [OrderDetails] (
 	[ProductID] INT NOT NULL,
 	[UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
 	[Quantity] SMALLINT NOT NULL CHECK([Quantity] > 0),
+	[QuantityFulfilled] SMALLINT NOT NULL CHECK ([QuantityFulfilled] BETWEEN 0 AND [Quantity]),
 	[Discount] DECIMAL(5,4) NOT NULL CHECK([Discount] BETWEEN 0 AND 1),
 	PRIMARY KEY([OrderID], [ProductID]),
 );
@@ -194,7 +217,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena jednostkowa produktu',
+    @name=N'MS_Description', @value=N'Cena jednostkowa netto produktu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'OrderDetails',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
@@ -490,7 +513,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Jednostkowa cena zakupu danego komponentu',
+    @name=N'MS_Description', @value=N'Jednostkowa cena zakupu netto danego komponentu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Components',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
@@ -512,12 +535,13 @@ GO
 
 CREATE TABLE [Products] (
 	[ID] INT IDENTITY,
-    [SupplierID] INT NOT NULL, 
-    [CategoryID] INT NOT NULL, 
-    ProductName VARCHAR(250) NOT NULL, 
-    QuantityPerUnit INT NOT NULL CHECK([QuantityPerUnit] > 0), 
-    UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
-    ProductRecipesID INT NOT NULL,
+	[SupplierID] INT NOT NULL, 
+	[CategoryID] INT NOT NULL, 
+	ProductName VARCHAR(250) NOT NULL, 
+	QuantityPerUnit INT NOT NULL, 
+	UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
+	ProductRecipesID INT NOT NULL,
+	[VATMultipler] DECIMAL(4,2) NOT NULL,
     FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
 	PRIMARY KEY([ID])
 );
@@ -531,7 +555,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena towaru',
+    @name=N'MS_Description', @value=N'Cena towaru netto',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Products',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
