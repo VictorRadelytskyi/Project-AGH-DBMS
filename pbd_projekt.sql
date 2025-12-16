@@ -139,7 +139,8 @@ GO
 CREATE TABLE [Orders] (
 	[ID] INT NOT NULL IDENTITY,
 	[CustomerID] INT NOT NULL,
-	[EmployeeID] INT NOT NULL,
+	[DealerEmployeeID] INT NOT NULL,
+	[AssemblerEmployeeID] INT NOT NULL,
 	[OrderDate] DATE NOT NULL,
 	[FulfillmentStart] DATETIME2(0),
 	[FulfillmentFinish] DATETIME2(0),
@@ -696,6 +697,22 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'LabourHours'
 GO
 
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Pracownik odpowiadający za kontakt z klientem i sprzedaż',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'DealerEmployeeID'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Pracownik odpowiadający za wyprodukowanie zamówienia klienta',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'AssemblerEmployeeID'
+GO
+
+/* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
+
 ALTER TABLE [Customers]
 ADD CONSTRAINT [FK_Customers_CustomerDemographics]
     FOREIGN KEY ([CustomerDemographicsID])
@@ -708,9 +725,14 @@ REFERENCES [Customers]([ID])
 ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Orders]
-ADD FOREIGN KEY([EmployeeID])
+ADD FOREIGN KEY([DealerEmployeeID])
 REFERENCES [Employees]([ID])
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ON UPDATE NO ACTION ON DELETE NO ACTION;;
+GO
+ALTER TABLE [Orders]
+ADD FOREIGN KEY([AssemblerEmployeeID])
+REFERENCES [Employees]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;;
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([OrderID])
