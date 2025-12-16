@@ -3,9 +3,7 @@ CREATE PROCEDURE UpdateComponent @ID INT,
 @supplierID INT,
 @componentName varchar(255),
 @componentType varchar(255),
-@unitPrice decimal(10,2),
-@unitsInStock int,
-@leadTime smallint
+@unitPrice decimal(10,2)
 AS 
 BEGIN
 SET NOCOUNT ON;
@@ -17,9 +15,7 @@ BEGIN TRY
         SET SupplierID = @supplierID,
         ComponentName = @componentName,
         ComponentType = @componentType,
-        UnitPrice = @unitPrice,
-        UnitsInStock = @unitsInStock,
-        LeadTime = @leadTime
+        UnitPrice = @unitPrice
         WHERE ID = @ID;
 
         IF @@ROWCOUNT = 0
