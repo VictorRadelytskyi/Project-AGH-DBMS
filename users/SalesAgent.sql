@@ -13,8 +13,8 @@ GRANT SELECT, INSERT ON dbo.OrderDetails TO Role_SalesAgent;
 
 -- job-related procedures
 GRANT EXECUTE ON dbo.AddCustomer TO Role_SalesAgent;
-GRANT EXECUTE ON dbo.sp_UpdateCustomerDemographics TO Role_SalesAgent;
-GRANT EXECUTE ON dbo.sp_PlaceFullOrder TO Role_SalesAgent;
+GRANT EXECUTE ON dbo.UpdateCustomerDemographics TO Role_SalesAgent;
+GRANT EXECUTE ON dbo.PlaceFullOrder TO Role_SalesAgent;
 GRANT EXECUTE ON dbo.AddSupplier TO Role_SalesAgent;
 GRANT EXECUTE ON dbo.UpdateSupplier TO Role_SalesAgent;
 GO

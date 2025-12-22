@@ -8,11 +8,11 @@ GRANT SELECT ON dbo.Orders TO Role_Assembler;
 GRANT SELECT ON dbo.OrderDetails TO Role_Assembler;
 GRANT SELECT ON dbo.Customers TO Role_Assembler;
 
-GRANT EXECUTE ON dbo.sp_StartOrderFulfillment TO Role_Assembler;
-GRANT EXECUTE ON dbo.sp_UpdateOrderItemProgress TO Role_Assembler;
-GRANT EXECUTE ON dbo.sp_CompleteOrderFulfillment TO Role_Assembler;
-GRANT EXECUTE ON dbo.sp_UpdateOrderItemProgress TO Role_Assembler;
-GRANT EXECUTE ON dbo.sp_IncrementOrderItemProgress TO Role_Assembler;
+GRANT EXECUTE ON dbo.StartOrderFulfillment TO Role_Assembler;
+GRANT EXECUTE ON dbo.UpdateOrderItemProgress TO Role_Assembler;
+GRANT EXECUTE ON dbo.CompleteOrderFulfillment TO Role_Assembler;
+GRANT EXECUTE ON dbo.UpdateOrderItemProgress TO Role_Assembler;
+GRANT EXECUTE ON dbo.IncrementOrderItemProgress TO Role_Assembler;
 
 GRANT EXECUTE ON dbo.ConsumeComponentInventory TO Role_Assembler;
 
