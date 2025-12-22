@@ -27,10 +27,13 @@ BEGIN
     SET XACT_ABORT ON;
 
     DECLARE @OrderDate DATETIME;
+    DECLARE @FulfillmentStart DATETIME;
 
     BEGIN TRY
         -- Validation
-        SELECT @OrderDate = OrderDate 
+        SELECT 
+          @OrderDate = OrderDate 
+          @FulfillmentStart = FulfillmentStart
         FROM [dbo].[Orders] 
         WHERE ID = @OrderID;
 
@@ -46,6 +49,11 @@ BEGIN
             THROW 51001, 'Cannot cancel order. It is older than 48 hours and may have already shipped.', 1;
         END
 
+        IF @FulfillmentStart IS NOT NULL
+        BEGIN
+          THROW 51002, 'Cannot cancel order — fulfillment has already begun.', 1;
+        END
+          
         BEGIN TRANSACTION;
 
             -- Delete the children (Lines)
