@@ -1,5 +1,5 @@
 /*
-sp_CancelOrder
+CancelOrder
 
 Safely removes an order and its details from the system:
                     
@@ -15,11 +15,11 @@ Parameters:
     
 Usage:
 
-EXEC sp_CancelOrder @OrderID = 10248;
+EXEC CancelOrder @OrderID = 10248;
 
 */
 
-CREATE OR ALTER PROCEDURE [dbo].[sp_CancelOrder]
+CREATE OR ALTER PROCEDURE [dbo].[CancelOrder]
     @OrderID INT
 AS
 BEGIN

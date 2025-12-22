@@ -1,6 +1,6 @@
 /*
 
-sp_PlaceFullOrder
+PlaceFullOrder
 
 Creates an Order header and associated OrderDetails lines 
 in a single Atomic Transaction.
@@ -20,14 +20,14 @@ Format: '[{"ProductID": 1, "Quantity": 5}, ...]'
     
 Usage:
 
-EXEC sp_PlaceFullOrder 
+EXEC PlaceFullOrder 
 @CustomerID = 1, 
 @EmployeeID = 2, 
 @Freight = 15.50,
 @ItemsJson = N'[{"ProductID": 10, "Quantity": 2}, {"ProductID": 12, "Quantity": 1}]';
 */
 
-CREATE OR ALTER PROCEDURE [dbo].[sp_PlaceFullOrder]
+CREATE OR ALTER PROCEDURE [dbo].[PlaceFullOrder]
     @CustomerID INT,
     @EmployeeID INT,
     @Freight DECIMAL(10,2) = 0.00,
@@ -57,7 +57,7 @@ BEGIN
                 j.ProductID, 
                 p.UnitPrice, -- Use server-side price, not client-side :)
                 j.Quantity,
-                0.0 -- Default discount (handled by sp_ApplyVolumeDiscount later)
+                0.0 -- Default discount (handled by ApplyVolumeDiscount later)
             FROM OPENJSON(@ItemsJson) 
             WITH (
                 ProductID INT, 

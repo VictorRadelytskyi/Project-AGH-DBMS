@@ -1,5 +1,5 @@
 /*
-sp_UpdateOrderItemProgress
+UpdateOrderItemProgress
 
 Updates the fulfillment status of a specific item in an order.
 
@@ -14,7 +14,7 @@ Parameters:
 @NewQuantityFulfilled - The new total amount fulfilled (e.g., 3).
 */
 
-CREATE OR ALTER PROCEDURE [dbo].[sp_UpdateOrderItemProgress]
+CREATE OR ALTER PROCEDURE [dbo].[UpdateOrderItemProgress]
     @OrderID INT,
     @ProductID INT,
     @NewQuantityFulfilled SMALLINT

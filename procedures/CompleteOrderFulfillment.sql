@@ -1,5 +1,5 @@
 /*
-sp_CompleteOrderFulfillment
+CompleteOrderFulfillment
 
 Finalizes the order fulfillment process by setting the FulfillmentFinish timestamp.
 The order must be fully complete before closing.
@@ -14,7 +14,7 @@ Parameters:
 @OrderID - ID of the order to finalize.
 */
 
-CREATE OR ALTER PROCEDURE [dbo].[sp_CompleteOrderFulfillment]
+CREATE OR ALTER PROCEDURE [dbo].[CompleteOrderFulfillment]
     @OrderID INT
 AS
 BEGIN

@@ -1,5 +1,5 @@
 /*
-sp_ApplyVolumeDiscount
+ApplyVolumeDiscount
 
 Calculates the total value of a given order and applies a 
 percentage discount to all items in that order based on 
@@ -10,10 +10,10 @@ Logic:
 	- If Order Total > 1,000  -> Apply 5%  (0.05) discount
 	- Otherwise               -> Apply 0%  (0.00) discount
     
-Usage:          EXEC sp_ApplyVolumeDiscount @OrderID = 123;
+Usage:          EXEC ApplyVolumeDiscount @OrderID = 123;
 */
 
-CREATE OR ALTER PROCEDURE [dbo].[sp_ApplyVolumeDiscount]
+CREATE OR ALTER PROCEDURE [dbo].[ApplyVolumeDiscount]
     @OrderID INT
 AS
 BEGIN

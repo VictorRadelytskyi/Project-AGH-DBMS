@@ -1,5 +1,5 @@
 /*
-sp_StartOrderFulfillment
+StartOrderFulfillment
 
 Marks an order as "In Progress".
 
@@ -12,7 +12,7 @@ Parameters:
 @AssemblerID  - ID of the Employee performing the assembly.
 */
 
-CREATE OR ALTER PROCEDURE dbo.sp_StartOrderFulfillment
+CREATE OR ALTER PROCEDURE dbo.StartOrderFulfillment
     @OrderID INT,
     @AssemblerID INT
 AS

@@ -1,11 +1,11 @@
 /*
-sp_IncrementOrderItemProgress
+IncrementOrderItemProgress
 
 Increments the fulfilled quantity by a delta (usually +1 or -1).
 Useful for barcode scanner interfaces or simply executing the procedure each time a product is done for peace of mind and to keep the db as the most up-to-date single source of truth
 */
 
-CREATE OR ALTER PROCEDURE dbo.sp_IncrementOrderItemProgress
+CREATE OR ALTER PROCEDURE dbo.IncrementOrderItemProgress
     @OrderID INT,
     @ProductID INT,
     @Delta SMALLINT

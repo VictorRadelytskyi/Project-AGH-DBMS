@@ -1,6 +1,6 @@
 /*
 
-sp_UpdateCustomerDemographics
+UpdateCustomerDemographics
 
 Upserts (update if exists, insert if doesn't exist) demographic information for a specific customer.
 
@@ -14,7 +14,7 @@ Parameters:
 
 Usage:
 
-EXEC sp_UpdateCustomerDemographics
+EXEC UpdateCustomerDemographics
     @CustomerID = 10,
     @AgeGroup = 2,
     @HasChildren = 1,
@@ -22,7 +22,7 @@ EXEC sp_UpdateCustomerDemographics
     @IsCityResident = 1;
 */
 
-CREATE OR ALTER PROCEDURE dbo.sp_UpdateCustomerDemographics
+CREATE OR ALTER PROCEDURE dbo.UpdateCustomerDemographics
     @CustomerID     INT,
     @AgeGroup       TINYINT = NULL,
     @HasChildren    BIT = NULL,
