@@ -1,4 +1,43 @@
--- Procedura UpdateEmployee - aktualizacja danych istniejącego pracownika w bazie
+/*
+UpdateEmployee
+
+Updates the profile information for an existing employee.
+
+Parameters:
+
+@ID                 - ID of the employee to update
+@employeePositionID - New ID of the job position
+@firstName          - Employee's first name
+@lastName           - Employee's last name
+@birthDate          - Date of birth
+@streetAddress      - Street and number
+@city               - City
+@region             - State/Province/Region
+@postalCode         - Zip/Postal code
+@country            - Country
+@phoneNumber        - Contact phone number
+@reportsTo          - ID of the new manager/supervisor (Optional)
+@photoBin           - Binary data for the employee photo (Optional)
+
+Usage:
+
+EXEC UpdateEmployee 
+    @ID = 5,
+    @employeePositionID = 3,
+    @firstName = '...',
+    @lastName = '...',
+    @birthDate = '1985-11-20',
+    @streetAddress = '...',
+    @city = '...',
+    @region = '...',
+    @postalCode = '...',
+    @country = '...',
+    @phoneNumber = '+48 999 888 777',
+    @reportsTo = 1,
+    @photoBin = NULL;
+
+*/
+
 CREATE PROCEDURE UpdateEmployee @ID INT,
 @employeePositionID int,
 @firstName varchar(255),
