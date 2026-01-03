@@ -6,8 +6,8 @@ BEGIN
     DECLARE @Factor DECIMAL(4,2);
 
     SELECT @Factor = ep.ProductivityFactor
-    FROM Employees e
-    INNER JOIN EmployeePositions ep ON ep.ID = e.EmployeePositionID
+    FROM dbo.Employees e
+    INNER JOIN dbo.EmployeePositions ep ON ep.ID = e.EmployeePositionID
     WHERE e.ID = @EmployeeID
 
     RETURN ISNULL(@Factor, 1.00)

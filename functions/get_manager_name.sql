@@ -7,7 +7,7 @@ BEGIN
     DECLARE @ManagerID INT;
 
     SELECT @ManagerID = ReportsTo
-    FROM Employees
+    FROM dbo.Employees
     WHERE ID = @EmployeeID;
 
     IF @ManagerID IS NOT NULL
