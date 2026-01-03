@@ -6,7 +6,7 @@ BEGIN
     DECLARE @FullName VARCHAR(512);
 
     SELECT @FullName = e.FirstName + ' ' + e.LastName
-    FROM Employees e
+    FROM dbo.Employees e
     WHERE e.ID = @EmployeeID;
 
     RETURN @FullName;
