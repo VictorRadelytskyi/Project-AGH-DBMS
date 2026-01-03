@@ -1,3 +1,19 @@
+/*
+fn_CalculateSupplierTotalStockValue
+
+Calculates the total monetary value of all inventory items 
+that were sourced from a specific supplier.
+
+Parameters:
+
+@SupplierID - ID of the supplier
+
+Usage:
+
+SELECT dbo.fn_CalculateSupplierTotalStockValue(3) AS [TotalActiveExposure];
+
+*/
+
 CREATE FUNCTION dbo.fn_CalculateSupplierTotalStockValue (@SupplierID INT)
 RETURNS DECIMAL(15,2)
 AS
