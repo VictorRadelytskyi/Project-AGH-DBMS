@@ -14,7 +14,7 @@ SELECT dbo.fn_GetSupplierContactInfoByComponent(10) AS [SupplierContact];
 
 */
 
-CREATE FUNCTION dbo.fn_GetSupplierContactInfoByComponent (@ComponenID INT)
+CREATE FUNCTION dbo.fn_GetSupplierContactInfoByComponent (@ComponentID INT)
 RETURNS VARCHAR(600)
 AS
 BEGIN
@@ -24,7 +24,7 @@ BEGIN
     SELECT TOP (1) @ContactInfo = s.CompanyName + ' (' + s.ContactName + '): ' + s.PhoneNumber
     FROM dbo.Suppliers s
     INNER JOIN dbo.Components c ON c.SupplierID = s.ID
-    WHERE c.ID = @ComponenID;
+    WHERE c.ID = @ComponentID;
 
     RETURN ISNULL(@ContactInfo, 'Brak danych dostawcy');
 
