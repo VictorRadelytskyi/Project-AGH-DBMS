@@ -1,4 +1,31 @@
--- Procedura AddComponentInventory - dodawanie nowej dostawy danego komponentu do magazunu komponentów w bazie
+/*
+AddComponentInventory
+
+Adds a new shipment/batch of a specific component to the inventory.
+This tracks the specific purchase price and date for a batch of items,
+allowing for FIFO/LIFO cost calculations later.
+
+Parameters:
+
+@componentID   - ID of the component definition (from Components table)
+@inventoryDate - Date of receipt. If NULL, current date/time is used.
+@unitPrice     - Purchase price per unit for this specific batch
+@unitsInStock  - Quantity of items received in this shipment
+@ID            - OUTPUT. Returns the generated InventoryID
+
+Usage:
+
+DECLARE @NewInventoryID INT;
+
+EXEC AddComponentInventory 
+    @componentID = 10, 
+    @inventoryDate = '2023-10-27', 
+    @unitPrice = 12.50,
+    @unitsInStock = 100,
+    @ID = @NewInventoryID OUTPUT;
+
+*/
+
 CREATE PROCEDURE AddComponentInventory @componentID INT,
 @inventoryDate DATETIME = NULL,
 @unitPrice decimal(10,2),

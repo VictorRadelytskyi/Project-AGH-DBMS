@@ -1,4 +1,40 @@
--- Procedura AddSupplier - dodawanie nowego dostawcy do bazy
+/*
+AddSupplier
+
+Adds a new supplier record to the database.
+
+Parameters:
+
+@companyName   - Legal name of the supplier company
+@contactName   - Primary contact person
+@contactTitle  - Job title of the contact person
+@streetAddress - Street and number
+@city          - City
+@region        - State/Province/Region
+@postalCode    - Zip/Postal code
+@country       - Country
+@phoneNumber   - Contact phone number
+@fax           - Fax number (Optional, defaults to NULL)
+@ID            - OUTPUT. Returns the generated SupplierID
+
+Usage:
+
+DECLARE @NewSupplierID INT;
+
+EXEC AddSupplier 
+    @companyName = '...',
+    @contactName = '...',
+    @contactTitle = '...',
+    @streetAddress = '...',
+    @city = '...',
+    @region = '...',
+    @postalCode = '...',
+    @country = '...',
+    @phoneNumber = '...',
+    @ID = @NewSupplierID OUTPUT;
+
+*/
+
 CREATE PROCEDURE AddSupplier @companyName varchar(255),
 @contactName varchar(255),
 @contactTitle varchar(255),

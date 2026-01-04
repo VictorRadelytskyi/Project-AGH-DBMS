@@ -1,4 +1,31 @@
--- Procedura AddComponent - dodawanie nowego komponentu do bazy
+/*
+AddComponent
+
+Adds a new component definition to the catalog (Components table).
+
+Parameters:
+
+@supplierID    - ID of the supplier providing this component
+@componentName - Name of the component (e.g., 'Wooden Plank')
+@componentType - Category of the component (e.g., 'Wood', 'Metal')
+@unitPrice     - Current catalog price per unit
+@ID            - OUTPUT. Returns the generated ID of the new component
+
+Usage:
+
+DECLARE @NewComponentID INT;
+
+EXEC AddComponent 
+    @supplierID = 1,
+    @componentName = 'Oak Wood Sheet',
+    @componentType = 'Wood',
+    @unitPrice = 45.50,
+    @ID = @NewComponentID OUTPUT;
+
+SELECT @NewComponentID AS [CreatedComponentID];
+
+*/
+
 CREATE PROCEDURE AddComponent @supplierID INT,
 @componentName varchar(255),
 @componentType varchar(255),
