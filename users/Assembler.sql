@@ -15,7 +15,7 @@ GRANT EXECUTE ON dbo.IncrementOrderItemProgress TO Role_Assembler;
 
 GRANT EXECUTE ON dbo.ConsumeComponentInventory TO Role_Assembler;
 
-GRANT EXECUTE ON dbo.AddProductRecipe.sql TO Role_Assembler;
+GRANT EXECUTE ON dbo.AddProductRecipe TO Role_Assembler;
 GRANT EXECUTE ON dbo.AddProductToWarehouse TO Role_Assembler;
 GRANT EXECUTE ON dbo.AddRecipeIngredient TO Role_Assembler;
 GRANT EXECUTE ON dbo.UpdateComponent TO Role_Assembler;
