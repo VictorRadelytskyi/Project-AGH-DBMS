@@ -10,7 +10,7 @@ DB_TABLES_FILE="pbd_projekt.sql" # File name of the sql file where db tables are
 # --- Safety Check: Ensure sqlcmd is installed ---
 if ! command -v sqlcmd &> /dev/null; then
     echo "Error: 'sqlcmd' command not found."
-    echo "Please install mssql-tools (Mac: brew install mssql-tools | Linux: apt-get/yum install mssql-tools)."
+    echo "Please install sqlcmd."
     exit 1
 fi
 
