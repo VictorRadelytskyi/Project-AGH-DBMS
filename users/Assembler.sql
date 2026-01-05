@@ -11,7 +11,6 @@ GRANT SELECT ON dbo.Customers TO Role_Assembler;
 GRANT EXECUTE ON dbo.StartOrderFulfillment TO Role_Assembler;
 GRANT EXECUTE ON dbo.UpdateOrderItemProgress TO Role_Assembler;
 GRANT EXECUTE ON dbo.CompleteOrderFulfillment TO Role_Assembler;
-GRANT EXECUTE ON dbo.UpdateOrderItemProgress TO Role_Assembler;
 GRANT EXECUTE ON dbo.IncrementOrderItemProgress TO Role_Assembler;
 
 GRANT EXECUTE ON dbo.ConsumeComponentInventory TO Role_Assembler;
