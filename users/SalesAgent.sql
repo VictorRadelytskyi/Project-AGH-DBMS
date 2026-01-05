@@ -3,9 +3,9 @@
 CREATE ROLE Role_SalesAgent;
 GO
 
--- manage Customer Data
-GRANT SELECT, INSERT, UPDATE ON dbo.Customers TO Role_SalesAgent;
-GRANT SELECT, INSERT, UPDATE ON dbo.CustomerDemographics TO Role_SalesAgent;
+-- read customer data
+GRANT SELECT ON dbo.Customers TO Role_SalesAgent;
+GRANT SELECT ON dbo.CustomerDemographics TO Role_SalesAgent;
 
 -- create orders (can't directly modify status like FulfillmentStart)
 GRANT SELECT, INSERT ON dbo.Orders TO Role_SalesAgent;
