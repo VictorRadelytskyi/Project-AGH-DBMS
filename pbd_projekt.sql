@@ -205,9 +205,12 @@ CREATE TABLE [OrderDetails] (
 	[ProductID] INT NOT NULL,
 	[UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
 	[Quantity] SMALLINT NOT NULL CHECK([Quantity] > 0),
-	[QuantityFulfilled] SMALLINT NOT NULL CHECK ([QuantityFulfilled] BETWEEN 0 AND [Quantity]),
+	[QuantityFulfilled] SMALLINT NOT NULL DEFAULT 0,
 	[Discount] DECIMAL(5,4) NOT NULL CHECK([Discount] BETWEEN 0 AND 1),
 	PRIMARY KEY([OrderID], [ProductID]),
+
+	CONSTRAINT [OrderDetails_QuantityFulfilled_Limit]
+		CHECK ([QuantityFulfilled] BETWEEN 0 AND [Quantity])
 );
 GO
 
