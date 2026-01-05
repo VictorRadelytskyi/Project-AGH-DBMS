@@ -16,3 +16,11 @@ FROM sys.objects
 -- WHERE type = 'U' AND is_ms_shipped = 0 --tables
 WHERE type IN ('FN', 'IF', 'TF', 'V', 'P', 'U', 'TR') AND is_ms_shipped = 0 --all
 ORDER BY type, name; 
+
+-- Defined Roles check
+-- SELECT *
+-- FROM sys.database_principals
+-- WHERE type = 'R'
+--   AND is_fixed_role = 0
+--   AND name <> 'public'
+-- ORDER BY name;
