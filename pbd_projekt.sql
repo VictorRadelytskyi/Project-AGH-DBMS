@@ -10,6 +10,7 @@ CREATE TABLE [Customers] (
 	[Country] VARCHAR(255) NOT NULL,
 	[PhoneNumber] VARCHAR(32) NOT NULL,
 	[Fax] VARCHAR(32),
+	[NIP] VARCHAR(10),
 	PRIMARY KEY([ID])
 );
 GO
@@ -106,6 +107,10 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'AgeGroup';
 GO
 
+ALTER TABLE [CustomerDemographics]
+ADD CONSTRAINT [CK_CustomerDemographics_AgeGroup] 
+CHECK ([AgeGroup] BETWEEN 1 AND 5);
+
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Czy ma dzieci',
     @level0type=N'SCHEMA',@level0name=N'dbo',
@@ -120,6 +125,10 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'IncomeGroup';
 GO
 
+ALTER TABLE [CustomerDemographics]
+ADD CONSTRAINT [CK_CustomerDemographics_IncomeGroup] 
+CHECK ([IncomeGroup] IN (1, 2, 3));
+
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Czy jest mieszkańcem miasta',
     @level0type=N'SCHEMA',@level0name=N'dbo',
@@ -130,13 +139,25 @@ GO
 CREATE TABLE [Orders] (
 	[ID] INT NOT NULL IDENTITY,
 	[CustomerID] INT NOT NULL,
-	[EmployeeID] INT NOT NULL,
+	[DealerEmployeeID] INT NOT NULL,
+	[AssemblerEmployeeID] INT NOT NULL,
 	[OrderDate] DATE NOT NULL,
+	[FulfillmentStart] DATETIME2(0),
+	[FulfillmentFinish] DATETIME2(0),
 	[RequiredDate] DATE,
 	[Freight] DECIMAL(10,2) NOT NULL CHECK([Freight] >= 0.00),
 	PRIMARY KEY([ID])
 );
 GO
+
+ALTER TABLE [Orders]
+ADD CONSTRAINT [CK_Orders_fulfillmentDates] 
+CHECK ([FulfillmentFinish] >= [FulfillmentStart]);
+
+
+ALTER TABLE [Orders]
+ADD CONSTRAINT [CK_Orders_FulfillmentStart_vs_OrderDate] 
+CHECK ([FulfillmentStart] >= [OrderDate]);
 
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Lista zamówień',
@@ -149,6 +170,20 @@ EXEC sys.sp_addextendedproperty
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Orders',
     @level2type=N'COLUMN',@level2name=N'OrderDate';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data rozpoczęcia obsługi zamówienia.',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'FulfillmentStart';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data zakończenia obsługi zamówienia. (Zamówienie gotowe do wysyłki/odbioru przez klienta)',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'FulfillmentFinish';
 GO
 
 EXEC sys.sp_addextendedproperty
@@ -170,8 +205,12 @@ CREATE TABLE [OrderDetails] (
 	[ProductID] INT NOT NULL,
 	[UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
 	[Quantity] SMALLINT NOT NULL CHECK([Quantity] > 0),
+	[QuantityFulfilled] SMALLINT NOT NULL DEFAULT 0,
 	[Discount] DECIMAL(5,4) NOT NULL CHECK([Discount] BETWEEN 0 AND 1),
 	PRIMARY KEY([OrderID], [ProductID]),
+
+	CONSTRAINT [OrderDetails_QuantityFulfilled_Limit]
+		CHECK ([QuantityFulfilled] BETWEEN 0 AND [Quantity])
 );
 GO
 
@@ -182,7 +221,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena jednostkowa produktu',
+    @name=N'MS_Description', @value=N'Cena jednostkowa netto produktu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'OrderDetails',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
@@ -440,12 +479,10 @@ GO
 
 CREATE TABLE [Components] (
     [ID] INT NOT NULL IDENTITY PRIMARY KEY,
-    [SupplierID] INT,
+    [SupplierID] INT NOT NULL,
     [ComponentName] VARCHAR(255) NOT NULL,
     [ComponentType] VARCHAR(255) NOT NULL,
     [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
-    [UnitsInStock] INT NOT NULL DEFAULT 0 CHECK([UnitsInStock] >= 0), 
-    [LeadTime] SMALLINT DEFAULT -1 CHECK([LeadTime] >= 0 OR [LeadTime] = -1),
     CONSTRAINT [FK_Components_SupplierID] FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID])
 );
 GO
@@ -478,34 +515,65 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Jednostkowa cena zakupu danego komponentu',
+    @name=N'MS_Description', @value=N'Cena jednostkowa po jakiej firma może zakupić dany komponent',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Components',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
 GO
 
-EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Liczba komponentów dostępnych w magazynie firmy, gotowych do wykorzystania do produkcji w czasie ~0',
-    @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'Components',
-    @level2type=N'COLUMN',@level2name=N'UnitsInStock';
+CREATE TABLE [ComponentsInventory] (
+    [ID] INT NOT NULL IDENTITY PRIMARY KEY,
+    [ComponentID] INT NOT NULL,
+    [InventoryDate] DATETIME DEFAULT GETDATE(),
+    [UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
+    [UnitsInStock] INT NOT NULL DEFAULT 0 CHECK([UnitsInStock] >= 0), 
+    CONSTRAINT [FK_ComponentsInventory_ComponentID] FOREIGN KEY ([ComponentID]) REFERENCES [Components]([ID]),
+);
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Czas w dniach, w którym firma jest w stanie zakupić dodatkową ilość danego komponentu. -1 jezeli czas jest nieznany lub komponent wycofany z produkcji i nie da się go już zamówić',
+    @name=N'MS_Description', @value=N'Lista stanów magazynowych dla komponentów (półproduktów) używanych do produkcji',
     @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'Components',
-    @level2type=N'COLUMN',@level2name=N'LeadTime';
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Klucz obcy wskazujący na konkretny komponent w tabeli Components',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'ComponentID';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Data dodania danej pratii danego komponentu do magazynu',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'InventoryDate';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Cena jednostkowa po jakiej firma zakupiła komponent w danej partii',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'UnitPrice';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Ilość komponentów dostępnych w magazynie dla danej pratii. Przy każdym użyciu liczba ta jest pomniejszana o ilość zużytych komponentów',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'ComponentsInventory',
+    @level2type=N'COLUMN',@level2name=N'UnitsInStock';
 GO
 
 CREATE TABLE [Products] (
 	[ID] INT IDENTITY,
-    [SupplierID] INT NOT NULL, 
-    [CategoryID] INT NOT NULL, 
-    ProductName VARCHAR(250) NOT NULL, 
-    QuantityPerUnit INT NOT NULL, 
-    UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
-    ProductRecipesID INT NOT NULL,
+	[SupplierID] INT NOT NULL, 
+	[CategoryID] INT NOT NULL, 
+	ProductName VARCHAR(250) NOT NULL, 
+	QuantityPerUnit INT NOT NULL, 
+	UnitPrice DECIMAL(10, 2) NOT NULL CHECK([UnitPrice] >= 0.00), 
+	ProductRecipesID INT NOT NULL,
+	[VATMultipler] DECIMAL(4,2) NOT NULL,
     FOREIGN KEY ([SupplierID]) REFERENCES [Suppliers]([ID]),
 	PRIMARY KEY([ID])
 );
@@ -519,7 +587,7 @@ EXEC sys.sp_addextendedproperty
 GO
 
 EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Cena towaru',
+    @name=N'MS_Description', @value=N'Cena towaru netto',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Products',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
@@ -544,7 +612,7 @@ GO
 CREATE TABLE [Warehouse] (
 	[ID] INT IDENTITY,
     ProductID INT NOT NULL,
-    UnitsInStock INT NOT NULL,
+    UnitsInStock INT NOT NULL CHECK([UnitsInStock] >= 0),
     LastStockUpdate DATETIME DEFAULT GETDATE(),
     StockLocation VARCHAR(150) NOT NULL,
     FOREIGN KEY([ProductID]) REFERENCES [Products](ID),
@@ -578,8 +646,6 @@ EXEC sys.sp_addextendedproperty
     @level1type=N'SCHEMA',@level1name=N'Warehouse',
     @level2type=N'COLUMN',@level2name=N'LastStockUpdate'
 GO
-
-/* Todo: opis stockdate */
 
 CREATE TABLE [ProductRecipes] (
 	[ID] INT IDENTITY PRIMARY KEY,
@@ -634,6 +700,20 @@ EXEC sys.sp_addextendedproperty
     @level2type=N'COLUMN',@level2name=N'LabourHours'
 GO
 
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Pracownik odpowiadający za kontakt z klientem i sprzedaż',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'DealerEmployeeID'
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Pracownik odpowiadający za wyprodukowanie zamówienia klienta',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Orders',
+    @level2type=N'COLUMN',@level2name=N'AssemblerEmployeeID'
+GO
+
 /* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
 
 ALTER TABLE [Customers]
@@ -648,9 +728,14 @@ REFERENCES [Customers]([ID])
 ON UPDATE NO ACTION ON DELETE NO ACTION;
 GO
 ALTER TABLE [Orders]
-ADD FOREIGN KEY([EmployeeID])
+ADD FOREIGN KEY([DealerEmployeeID])
 REFERENCES [Employees]([ID])
-ON UPDATE NO ACTION ON DELETE NO ACTION;
+ON UPDATE NO ACTION ON DELETE NO ACTION;;
+GO
+ALTER TABLE [Orders]
+ADD FOREIGN KEY([AssemblerEmployeeID])
+REFERENCES [Employees]([ID])
+ON UPDATE NO ACTION ON DELETE NO ACTION;;
 GO
 ALTER TABLE [OrderDetails]
 ADD FOREIGN KEY([OrderID])

@@ -1,4 +1,4 @@
-# Projekt bazdy danych firmy produkcyjno-usługowej.
+# Projekt bazy danych firmy produkcyjno-usługowej.
 
 Autorzy:
 - **Marcin Małek**: Employees, EmployeePositions, Suppliers, Components

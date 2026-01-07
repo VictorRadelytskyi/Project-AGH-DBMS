@@ -1,4 +1,39 @@
--- Procedura UpdateSupplier - aktualizacja danych istniejącego dostawcy w bazie
+/*
+UpdateSupplier
+
+Updates the contact and address information for an existing supplier.
+
+Parameters:
+
+@ID            - ID of the supplier to update
+@companyName   - Legal name of the supplier company
+@contactName   - Primary contact person
+@contactTitle  - Job title of the contact person
+@streetAddress - Street and number
+@city          - City
+@region        - State/Province/Region
+@postalCode    - Zip/Postal code
+@country       - Country
+@phoneNumber   - Contact phone number
+@fax           - Fax number
+
+Usage:
+
+EXEC UpdateSupplier 
+    @ID = 1,
+    @companyName = '...',
+    @contactName = '...',
+    @contactTitle = '...',
+    @streetAddress = '...',
+    @city = '...',
+    @region = '...',
+    @postalCode = '...',
+    @country = '...',
+    @phoneNumber = '...',
+    @fax = NULL;
+
+*/
+
 CREATE PROCEDURE UpdateSupplier @ID INT,
 @companyName varchar(255),
 @contactName varchar(255),

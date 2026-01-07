@@ -1,4 +1,41 @@
--- Procedura AddEmployee - dodawanie nowego pracownika do bazy
+/*
+AddEmployee
+
+Adds a new employee record to the database.
+
+Parameters:
+
+@employeePositionID - ID of the job position (Foreign Key)
+@firstName          - Employee's first name
+@lastName           - Employee's last name
+@birthDate          - Date of birth
+@streetAddress      - Street and number
+@city               - City
+@region             - State/Province/Region
+@postalCode         - Zip/Postal code
+@country            - Country
+@phoneNumber        - Contact phone number
+@ID                 - OUTPUT. Returns the generated EmployeeID
+
+Usage:
+
+DECLARE @NewEmployeeID INT;
+
+EXEC AddEmployee 
+    @employeePositionID = 2,
+    @firstName = '...',
+    @lastName = '...',
+    @birthDate = '1990-05-15',
+    @streetAddress = '...',
+    @city = '...',
+    @region = '...',
+    @postalCode = '...',
+    @country = '...',
+    @phoneNumber = '+48 123 456 789',
+    @ID = @NewEmployeeID OUTPUT;
+
+*/
+
 CREATE PROCEDURE AddEmployee @employeePositionID int,
 @firstName varchar(255),
 @lastName varchar(255),

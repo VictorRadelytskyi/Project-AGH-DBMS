@@ -1,4 +1,22 @@
--- Procedura RemoveComponent - usuwanie istniejącego komponentu z bazy
+/*
+RemoveComponent
+
+Removes a component definition from the database.
+This procedure safely deletes a record from the Components table.
+It includes specific error handling for Foreign Key violations,
+preventing the deletion of components that are currently in use.
+
+Parameters:
+
+@ID - ID of the component to be removed
+
+Usage:
+
+EXEC RemoveComponent 
+    @ID = 10;
+
+*/
+
 CREATE PROCEDURE RemoveComponent @ID INT
 AS
 BEGIN
