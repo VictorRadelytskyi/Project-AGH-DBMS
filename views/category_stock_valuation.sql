@@ -27,7 +27,7 @@ SELECT
     c.CategoryName,
     COUNT (DISTINCT p.ID) AS ProductsAvailable,
     ISNULL(SUM(w.UnitsInStock), 0) AS TotalUnits,
-    ISNULL(SUM(w.UnitsInStock * p.UnitPrice), 0) TotalCategoryPrice,
+    ISNULL(SUM(w.UnitsInStock * p.UnitPrice), 0) AS TotalCategoryPrice,
     ISNULL(SUM(pr.LabourHours * w.UnitsInStock), 0) AS TotalLabourHoursSpentManufacturing
     FROM 
     Products p
@@ -37,5 +37,5 @@ SELECT
     ON p.ProductRecipesID = pr.ID
     LEFT JOIN Warehouse w
     ON p.ID = w.ProductID
-    GROUP BY CategoryName;
+    GROUP BY c.CategoryName;
 GO
