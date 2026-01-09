@@ -6,14 +6,16 @@ AS
 BEGIN
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
+
+DECLARE @msg NVARCHAR(2048);
+
 BEGIN TRY
-    BEGIN TRAN AddProductRecipe
+    BEGIN TRAN
         IF @LabourHours <= 0
-            BEGIN 
-                ROLLBACK TRAN AddProductRecipe
-                DECLARE @msg NVARCHAR(2048) = N'Czas pracy nie może być ujemny';
-                THROW 51000, @msg, 1;
-            END
+		BEGIN 
+			SET @msg = N'Czas pracy nie może być ujemny';
+			THROW 51000, @msg, 1;
+		END
         INSERT INTO ProductRecipes(
             RecipeName,
             LabourHours
