@@ -10,7 +10,7 @@ ON ComponentsInventory
 AFTER UPDATE
 AS
 BEGIN
-    IF EXISTS (SELECT 1 FROM ComponentsInventory WHERE UnitsInStock < 10)
+    IF EXISTS (SELECT 1 FROM inserted WHERE UnitsInStock < 10)
     BEGIN 
         PRINT 'Warning: One or more components has reached low stock levels';
     END

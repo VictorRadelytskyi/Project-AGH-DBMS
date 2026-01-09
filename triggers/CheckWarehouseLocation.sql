@@ -35,7 +35,7 @@ BEGIN
         OR StockLocation LIKE '%[^A-Za-z0-9 -,]%'
     )
     BEGIN 
-        RAISERROR('Invalid Location format. Must start with a letter and contain only alphanumeric characters.', 16, 1);
+        RAISERROR('Invalid Location format. Must start with a letter and contain only letters, numbers, spaces, dashes, and commas.', 16, 1);
         ROLLBACK TRANSACTION;
     END
 END;
