@@ -1,5 +1,5 @@
 CREATE PROCEDURE AddCategory
-@CategoryName VARCHAR(250) NOT NULL, 
+@CategoryName VARCHAR(250), 
 @Description VARCHAR(8000), 
 @Picture VARBINARY(MAX),
 @ID INT OUTPUT
@@ -7,6 +7,9 @@ AS
 BEGIN
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
+
+IF @CategoryName IS NULL OR LTRIM(RTRIM(@CategoryName)) = ''
+THROW 51001, N'@CategoryName cannot be NULL/empty.', 1;
 
 BEGIN TRY
     BEGIN TRAN AddCategory
