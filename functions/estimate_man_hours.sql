@@ -20,11 +20,12 @@ BEGIN
     DECLARE @TotalHours DECIMAL(10, 2);
 
     SELECT @TotalHours = (r.LabourHours * @Quantity)
-    FROM [Products] p
-    INNER JOIN [ProductRecipes] r ON p.ProductRecipesID = r.ID
+    FROM Products p
+    INNER JOIN ProductRecipes r ON p.ProductRecipesID = r.ID
     WHERE p.ID = @ProductID;
 
     -- Return 0 if product or recipe not found to prevent NULL errors
     RETURN ISNULL(@TotalHours, 0.00);
 END;
 GO
+

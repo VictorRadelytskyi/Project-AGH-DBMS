@@ -23,13 +23,13 @@ BEGIN TRY
         )
 
         SET @ID = CAST(SCOPE_IDENTITY() AS INT);
-    COMMIT TRAN AddProductRecipe
+    COMMIT;
 END TRY
 BEGIN CATCH
-    IF @@TRANCOUNT > 0
-        ROLLBACK TRAN AddProductRecipe
-        DECLARE @msg NVARCHAR(2048) = N'Nie udało się dodać ProductRecipe)' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
-        THROW 51000, @msg, 1;
+	IF @@TRANCOUNT > 0 ROLLBACK;
+		SET @msg = N'Nie udało się dodać ProductRecipe' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
+		THROW 51000, @msg, 1;
 END CATCH
 END;
 GO
+
