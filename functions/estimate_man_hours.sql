@@ -9,7 +9,7 @@ Usage:
 SELECT dbo.fn_EstimateManHours(1, 50) AS TotalManHours;
 */
 
-CREATE [dbo].[fn_EstimateManHours]
+CREATE FUNCTION dbo.fn_EstimateManHours
 (
     @ProductID INT,
     @Quantity INT
