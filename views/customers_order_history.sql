@@ -27,7 +27,8 @@ LEFT JOIN OrderDetails od
 	ON od.OrderID = o.ID
 GROUP BY
 	o.CustomerID,
-	c.ContactName
+	c.ContactName,
 	DATEPART(YEAR,	o.OrderDate),
-	DATEPART(MONTH,	o.OrderDate),
+	DATEPART(MONTH,	o.OrderDate);
 GO
+
