@@ -643,7 +643,7 @@ GO
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Data ostatniej aktualizacji stanu magazynowego dla danego produktu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'SCHEMA',@level1name=N'Warehouse',
+    @level1type=N'TABLE',@level1name=N'Warehouse',
     @level2type=N'COLUMN',@level2name=N'LastStockUpdate'
 GO
 
@@ -691,13 +691,6 @@ EXEC sys.sp_addextendedproperty
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'RecipeIngredients',
     @level2type=N'COLUMN',@level2name=N'QuantityRequired';
-GO
-
-EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Czas roboczy potrzebny dla produkcji produktu o ID ID',
-    @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'ProductRecipes',
-    @level2type=N'COLUMN',@level2name=N'LabourHours'
 GO
 
 EXEC sys.sp_addextendedproperty
