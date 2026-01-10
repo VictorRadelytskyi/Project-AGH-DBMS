@@ -1,7 +1,7 @@
 CREATE PROCEDURE AddProductToWarehouse
-@ProductID INT NOT NULL,
-@UnitsInStock INT NOT NULL,
-@StockLocation VARCHAR(150) NOT NULL,
+@ProductID INT,
+@UnitsInStock INT,
+@StockLocation VARCHAR(150),
 @ID INT OUTPUT
 AS
 BEGIN

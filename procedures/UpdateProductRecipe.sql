@@ -1,7 +1,7 @@
 CREATE PROCEDURE UpdateProductRecipe
 @ID INT,
 @RecipeName VARCHAR(255),
-@LabourHours DECIMAL(10, 2) NOT NULL
+@LabourHours DECIMAL(10, 2)
 AS 
 BEGIN
 SET NOCOUNT ON;

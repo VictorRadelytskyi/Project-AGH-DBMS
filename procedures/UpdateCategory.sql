@@ -1,6 +1,6 @@
 CREATE PROCEDURE UpdateCategory
-@ID INT NOT NULL,
-@CategoryName VARCHAR(250) NOT NULL, 
+@ID INT,
+@CategoryName VARCHAR(250), 
 @Description VARCHAR(8000), 
 @Picture VARBINARY(MAX)
 AS

@@ -1,6 +1,6 @@
 CREATE PROCEDURE AddProductRecipe
 @RecipeName VARCHAR(255),
-@LabourHours DECIMAL(10, 2) NOT NULL,
+@LabourHours DECIMAL(10, 2),
 @ID INT OUTPUT 
 AS 
 BEGIN

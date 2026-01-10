@@ -1,11 +1,11 @@
 CREATE PROCEDURE AddProduct 
-@SupplierID INT NOT NULL, 
-@CategoryID INT NOT NULL, 
-@ProductName VARCHAR(250) NOT NULL, 
-@QuantityPerUnit INT NOT NULL, 
-@UnitPrice DECIMAL(10, 2) NOT NULL, 
-@ProductRecipesID INT NOT NULL,
-@VATMultiplier DECIMAL(4,2) NOT NULL,
+@SupplierID INT,
+@CategoryID INT, 
+@ProductName VARCHAR(250), 
+@QuantityPerUnit INT, 
+@UnitPrice DECIMAL(10, 2), 
+@ProductRecipesID INT,
+@VATMultiplier DECIMAL(4,2),
 @ID INT OUTPUT
 AS
 BEGIN
