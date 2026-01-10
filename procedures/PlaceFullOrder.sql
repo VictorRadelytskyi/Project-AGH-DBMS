@@ -12,7 +12,8 @@ to ensure pricing integrity.
 Parameters:
 
 @CustomerID - ID of the customer
-@EmployeeID - ID of the employee processing the order
+@DealerEmployeeID - ID of the employee in charge of sales for this order
+@AssemblerEmployeeID - ID of the employee assembling the order
 @Freight    - Shipping cost (default 0)
 @ItemsJson  - JSON string of items. 
 
@@ -22,14 +23,16 @@ Usage:
 
 EXEC PlaceFullOrder 
 @CustomerID = 1, 
-@EmployeeID = 2, 
+@DealerEmployeeID = 2,
+@AssemblerEmployeeID = 3,
 @Freight = 15.50,
 @ItemsJson = N'[{"ProductID": 10, "Quantity": 2}, {"ProductID": 12, "Quantity": 1}]';
 */
 
 CREATE OR ALTER PROCEDURE [dbo].[PlaceFullOrder]
     @CustomerID INT,
-    @EmployeeID INT,
+    @DealerEmployeeID INT,
+    @AssemblerEmployeeID INT,
     @Freight DECIMAL(10,2) = 0.00,
     @ItemsJson NVARCHAR(MAX) -- Pass items as a JSON array
 AS
@@ -43,8 +46,8 @@ BEGIN
         BEGIN TRANSACTION;
 
             -- 1. Insert the Order Header
-            INSERT INTO [dbo].[Orders] (CustomerID, EmployeeID, OrderDate, Freight)
-            VALUES (@CustomerID, @EmployeeID, GETDATE(), @Freight);
+            INSERT INTO [dbo].[Orders] (CustomerID, DealerEmployeeID, AssemblerEmployeeID, OrderDate, Freight)
+            VALUES (@CustomerID, @DealerEmployeeID, @AssemblerEmployeeID, GETDATE(), @Freight);
 
             -- Capture the newly created Order ID
             SET @NewOrderID = SCOPE_IDENTITY();
