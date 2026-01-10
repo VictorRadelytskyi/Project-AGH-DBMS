@@ -3,7 +3,7 @@
 # --- Configuration ---
 DB_SERVER="janilowski.database.windows.net"
 DB_NAME="dev"
-DB_USER="..." # Write your own username here
+# DB_USER="..." # Username read from env now
 
 DB_TABLES_FILE="pbd_projekt.sql" # File name of the sql file where db tables are defined
 
@@ -12,6 +12,12 @@ if ! command -v sqlcmd &> /dev/null; then
     echo "Error: 'sqlcmd' command not found."
     echo "Please install sqlcmd."
     exit 1
+fi
+
+# --- Secure Username Prompt ---
+if [ -z "$DB_USER" ]; then
+    read -sp "Enter db username: " DB_USER
+    echo ""
 fi
 
 # --- Secure Password Prompt ---
