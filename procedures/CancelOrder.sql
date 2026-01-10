@@ -32,7 +32,7 @@ BEGIN
     BEGIN TRY
         -- Validation
         SELECT 
-          @OrderDate = OrderDate 
+          @OrderDate = OrderDate,
           @FulfillmentStart = FulfillmentStart
         FROM [dbo].[Orders] 
         WHERE ID = @OrderID;
