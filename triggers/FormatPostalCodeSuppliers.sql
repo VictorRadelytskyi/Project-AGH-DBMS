@@ -1,4 +1,4 @@
-CREATE TRIGGER FormatPostalCode ON Suppliers
+CREATE TRIGGER FormatPostalCodeSuppliers ON Suppliers
 AFTER INSERT, UPDATE
 AS
 BEGIN
