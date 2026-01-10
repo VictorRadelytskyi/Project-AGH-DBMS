@@ -6,14 +6,16 @@ AS
 BEGIN
 SET NOCOUNT ON;
 SET XACT_ABORT ON;
+
+DECLARE @msg NVARCHAR(2048);
+
 BEGIN TRY
-    BEGIN TRAN AddProductRecipe
+    BEGIN TRAN
         IF @LabourHours <= 0
-            BEGIN 
-                ROLLBACK TRAN AddProductRecipe
-                DECLARE @msg NVARCHAR(2048) = N'Czas pracy nie może być ujemny';
-                THROW 51000, @msg, 1;
-            END
+		BEGIN 
+			SET @msg = N'Czas pracy nie może być ujemny';
+			THROW 51000, @msg, 1;
+		END
         INSERT INTO ProductRecipes(
             RecipeName,
             LabourHours
@@ -23,13 +25,13 @@ BEGIN TRY
         )
 
         SET @ID = CAST(SCOPE_IDENTITY() AS INT);
-    COMMIT TRAN AddProductRecipe
+    COMMIT;
 END TRY
 BEGIN CATCH
-    IF @@TRANCOUNT > 0
-        ROLLBACK TRAN AddProductRecipe
-        DECLARE @msg NVARCHAR(2048) = N'Nie udało się dodać ProductRecipe)' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
-        THROW 51000, @msg, 1;
+	IF @@TRANCOUNT > 0 ROLLBACK;
+		SET @msg = N'Nie udało się dodać ProductRecipe' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
+		THROW 51000, @msg, 1;
 END CATCH
 END;
 GO
+

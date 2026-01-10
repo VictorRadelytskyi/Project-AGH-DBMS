@@ -1,4 +1,4 @@
-CREATE TRIGGER FormatPostalCode ON Employees
+CREATE TRIGGER FormatPostalCodeEmployees ON Employees
 AFTER INSERT, UPDATE
 AS
 BEGIN
