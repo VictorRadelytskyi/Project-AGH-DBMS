@@ -205,9 +205,12 @@ CREATE TABLE [OrderDetails] (
 	[ProductID] INT NOT NULL,
 	[UnitPrice] DECIMAL(10,2) NOT NULL CHECK([UnitPrice] >= 0.00),
 	[Quantity] SMALLINT NOT NULL CHECK([Quantity] > 0),
-	[QuantityFulfilled] SMALLINT NOT NULL CHECK ([QuantityFulfilled] BETWEEN 0 AND [Quantity]),
+	[QuantityFulfilled] SMALLINT NOT NULL DEFAULT 0,
 	[Discount] DECIMAL(5,4) NOT NULL CHECK([Discount] BETWEEN 0 AND 1),
 	PRIMARY KEY([OrderID], [ProductID]),
+
+	CONSTRAINT [OrderDetails_QuantityFulfilled_Limit]
+		CHECK ([QuantityFulfilled] BETWEEN 0 AND [Quantity])
 );
 GO
 
@@ -640,7 +643,7 @@ GO
 EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Data ostatniej aktualizacji stanu magazynowego dla danego produktu',
     @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'SCHEMA',@level1name=N'Warehouse',
+    @level1type=N'TABLE',@level1name=N'Warehouse',
     @level2type=N'COLUMN',@level2name=N'LastStockUpdate'
 GO
 
@@ -688,13 +691,6 @@ EXEC sys.sp_addextendedproperty
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'RecipeIngredients',
     @level2type=N'COLUMN',@level2name=N'QuantityRequired';
-GO
-
-EXEC sys.sp_addextendedproperty
-    @name=N'MS_Description', @value=N'Czas roboczy potrzebny dla produkcji produktu o ID ID',
-    @level0type=N'SCHEMA',@level0name=N'dbo',
-    @level1type=N'TABLE',@level1name=N'ProductRecipes',
-    @level2type=N'COLUMN',@level2name=N'LabourHours'
 GO
 
 EXEC sys.sp_addextendedproperty

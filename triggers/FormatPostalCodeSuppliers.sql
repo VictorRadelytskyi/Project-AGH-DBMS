@@ -1,4 +1,4 @@
-CREATE TRIGGER FormatPostalCode ON Suppliers
+CREATE OR ALTER TRIGGER FormatPostalCodeSuppliers ON Suppliers
 AFTER INSERT, UPDATE
 AS
 BEGIN
@@ -11,7 +11,10 @@ BEGIN
         FROM inserted 
         WHERE LEN(REPLACE(REPLACE(PostalCode, '-', ''), ' ', '')) < 5
     )
+    BEGIN
+        ROLLBACK TRAN;
         THROW 51000, 'Kod pocztowy musi mieć co najmniej 5 znaków (po usunięciu spacji i myślników).', 1;
+    END;
 
     UPDATE s
     SET PostalCode = REPLACE(REPLACE(i.PostalCode, '-', ''), ' ', '')

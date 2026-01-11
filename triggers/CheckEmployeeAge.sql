@@ -1,19 +1,20 @@
-CREATE TRIGGER CheckEmployeeAge ON Employees
+CREATE OR ALTER TRIGGER CheckEmployeeAge ON Employees
 AFTER INSERT, UPDATE
 AS
 BEGIN
-
     SET NOCOUNT ON;
 
-    IF TRIGGER_NESTLEVEL() > 1 RETURN;
+    DECLARE @cutoff date = DATEADD(YEAR, -18, CONVERT(date, GETDATE()));
 
     IF EXISTS (
         SELECT 1
-        FROM inserted
-        WHERE BirthDate > DATEDIFF(YEAR, -18, GETDATE())
+        FROM inserted i
+        WHERE i.BirthDate IS NULL
+           OR i.BirthDate > @cutoff    -- younger than 18
     )
-        ROLLBACK TRAN;
-        THROW 51000, 'Nie można zatrudnić niepełnoletniego pracownika!!', 1;
-    
+    BEGIN
+        IF @@TRANCOUNT > 0 ROLLBACK TRANSACTION;
+        THROW 51000, N'Nie można zatrudnić niepełnoletniego pracownika!!', 1;
+    END
 END;
-GO
+
