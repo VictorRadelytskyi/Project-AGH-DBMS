@@ -1,0 +1,30 @@
+name: Generate SQL docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate Markdown docs
+        run: python scripts/gen_sql_docs.py --check
+
+      - name: Upload generated docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: sql-docs
+          path: docs/sql
+

@@ -1,3 +1,7 @@
+/*
+Create all necessary tables
+*/
+
 CREATE TABLE [Customers] (
 	[ID] INT NOT NULL IDENTITY,
 	[CustomerDemographicsID] INT,
