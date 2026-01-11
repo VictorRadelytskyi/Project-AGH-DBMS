@@ -1,4 +1,4 @@
-CREATE TRIGGER CheckEmployeeAge ON Employees
+CREATE OR ALTER TRIGGER CheckEmployeeAge ON Employees
 AFTER INSERT, UPDATE
 AS
 BEGIN
