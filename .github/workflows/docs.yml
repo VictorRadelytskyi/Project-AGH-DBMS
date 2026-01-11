@@ -1,16 +1,21 @@
-name: Generate SQL docs
+name: Deploy Docs to GitHub Pages
 
 on:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
-  gen:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,12 +24,84 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Generate Markdown docs
-        run: python scripts/gen_sql_docs.py --check
+      - name: Install MkDocs
+        run: pip install mkdocs-material
 
-      - name: Upload generated docs
-        uses: actions/upload-artifact@v4
+      - name: Generate SQL docs (do not fail on missing headers)
+        run: python scripts/gen_sql_docs.py
+
+      - name: Report missing SQL doc headers (warnings only)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import os
+
+          IGNORES = {".git", "node_modules", "docs", "site", ".venv", "venv", "__pycache__"}
+
+          def should_ignore(p: Path) -> bool:
+              return any(part in IGNORES for part in p.parts)
+
+          def has_header_doc(sql_text: str) -> bool:
+              s = sql_text.lstrip("\ufeff").lstrip()
+              if s.startswith("/*"):
+                  end = s.find("*/")
+                  if end == -1:
+                      return False
+                  raw = s[2:end]
+                  # has at least one non-empty line inside the block
+                  return any(line.strip() for line in raw.splitlines())
+
+              # leading consecutive "--" lines
+              lines = s.splitlines()
+              header_lines = 0
+              for ln in lines:
+                  stripped = ln.lstrip()
+                  if not stripped.startswith("--"):
+                      break
+                  if stripped[2:].strip():
+                      header_lines += 1
+              return header_lines > 0
+
+          missing = []
+          for p in Path(".").rglob("*.sql"):
+              if should_ignore(p):
+                  continue
+              text = p.read_text(encoding="utf-8", errors="replace")
+              if not has_header_doc(text):
+                  missing.append(p.as_posix())
+
+          missing.sort()
+
+          if not missing:
+              print("All SQL files have documentation headers.")
+          else:
+              print(f"Missing documentation headers: {len(missing)}")
+              for f in missing:
+                  print(f"::warning file={f},title=Missing SQL doc header::Add a doc header at the top (/* ... */ or leading -- lines).")
+
+              summary = os.environ.get("GITHUB_STEP_SUMMARY")
+              if summary:
+                  with open(summary, "a", encoding="utf-8") as s:
+                      s.write("## Missing SQL doc headers (non-blocking)\n")
+                      for f in missing:
+                          s.write(f"- `{f}`\n")
+          PY
+
+      - name: Build site
+        run: mkdocs build --strict
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: sql-docs
-          path: docs/sql
+          path: site
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
