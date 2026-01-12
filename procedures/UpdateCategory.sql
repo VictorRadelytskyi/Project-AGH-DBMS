@@ -1,3 +1,32 @@
+/*
+UpdateCategory
+
+Updates an existing product category with new information.
+
+Parameters:
+@ID           - ID of the category to update (required)
+@CategoryName - Name of the category (required)
+@Description  - Detailed description of the category (optional)
+@Picture      - Binary image data for the category (optional)
+
+Business Rules:
+- Category with specified ID must exist
+- CategoryName should be unique (enforced by database constraints)
+- Description and Picture can be set to NULL to clear existing values
+
+Usage:
+EXEC UpdateCategory 
+    @ID = 2,
+    @CategoryName = 'Premium Electronics',
+    @Description = 'High-end electronic components and luxury devices',
+    @Picture = NULL;
+
+Error Handling:
+- Throws error 51000 if category with specified ID doesn't exist
+- Throws error 52000 for any other database errors (e.g., constraint violations)
+- All operations are wrapped in a transaction for data consistency
+*/
+
 CREATE PROCEDURE UpdateCategory
 @ID INT,
 @CategoryName VARCHAR(250), 

@@ -1,3 +1,31 @@
+/*
+UpdateProductRecipe
+
+Updates an existing product recipe with new information.
+
+Parameters:
+@ID          - ID of the product recipe to update (required)
+@RecipeName  - Name of the recipe
+@LabourHours - Number of labor hours required (must be positive)
+
+Business Rules:
+- LabourHours must be greater than 0
+- Product recipe with specified ID must exist
+- Recipe name should be descriptive of the manufacturing process
+
+Usage:
+EXEC UpdateProductRecipe 
+    @ID = 3,
+    @RecipeName = 'Updated Assembly Process v2.1',
+    @LabourHours = 4.5;
+
+Error Handling:
+- Throws error 51000 if LabourHours is not positive
+- Throws error 51000 if recipe with specified ID doesn't exist
+- Throws error 52000 for any other database errors
+- All operations are wrapped in a transaction for data consistency
+*/
+
 CREATE PROCEDURE UpdateProductRecipe
 @ID INT,
 @RecipeName VARCHAR(255),

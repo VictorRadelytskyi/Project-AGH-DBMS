@@ -23,7 +23,7 @@ BEGIN
     BEGIN TRY
         BEGIN TRANSACTION;
 
-        -- validatioin 
+        -- validation 
         IF NOT EXISTS (SELECT 1 FROM dbo.Orders WHERE ID = @OrderID)
         BEGIN
             THROW 50001, 'Order not found.', 1;

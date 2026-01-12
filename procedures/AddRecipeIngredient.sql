@@ -1,3 +1,38 @@
+/*
+AddRecipeIngredient
+
+Adds a component requirement to a product recipe, specifying how much
+of a particular component is needed to manufacture the product.
+
+Parameters:
+@ProductRecipeID  - ID of the product recipe (required)
+@ComponentID      - ID of the component needed (required)
+@QuantityRequired - Amount of component needed (must be positive)
+@ID               - OUTPUT. Returns the generated RecipeIngredientID
+
+Business Rules:
+- QuantityRequired must be greater than 0
+- ProductRecipeID must reference an existing recipe
+- ComponentID must reference an existing component
+- Same component can appear multiple times in a recipe if needed
+
+Usage:
+DECLARE @NewIngredientID INT;
+
+EXEC AddRecipeIngredient 
+    @ProductRecipeID = 5,
+    @ComponentID = 12,
+    @QuantityRequired = 2.5,
+    @ID = @NewIngredientID OUTPUT;
+
+SELECT @NewIngredientID AS [CreatedRecipeIngredientID];
+
+Error Handling:
+- Throws error 52000 if QuantityRequired is not positive
+- Throws error 51000 for foreign key violations or other database errors
+- All operations are wrapped in a transaction for data consistency
+*/
+
 CREATE PROCEDURE AddRecipeIngredient
 @ProductRecipeID INT NOT NULL,
 @ComponentID INT NOT NULL,

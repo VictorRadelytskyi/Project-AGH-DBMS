@@ -1,3 +1,42 @@
+/*
+UpdateProduct
+
+Updates an existing product record with new information.
+
+Parameters:
+@ID               - ID of the product to update (required)
+@SupplierID       - ID of the supplier providing this product
+@CategoryID       - ID of the product category
+@ProductName      - Name of the product
+@QuantityPerUnit  - Number of units per package (must be positive)
+@UnitPrice        - Price per unit (must be positive)
+@ProductRecipesID - ID of the manufacturing recipe
+@VATMultiplier    - VAT rate multiplier (must be positive, e.g., 1.20 for 20% VAT)
+
+Business Rules:
+- QuantityPerUnit must be greater than 0
+- UnitPrice must be greater than 0
+- VATMultiplier must be greater than 0
+- Product with specified ID must exist
+
+Usage:
+EXEC UpdateProduct 
+    @ID = 5,
+    @SupplierID = 2,
+    @CategoryID = 1,
+    @ProductName = 'Updated Product Name',
+    @QuantityPerUnit = 10,
+    @UnitPrice = 25.99,
+    @ProductRecipesID = 3,
+    @VATMultiplier = 1.23;
+
+Error Handling:
+- Throws error 51000 if validation fails (negative values)
+- Throws error 51000 if product with specified ID doesn't exist
+- Throws error 52000 for any other database errors
+- All operations are wrapped in a transaction for data consistency
+*/
+
 CREATE PROCEDURE UpdateProduct
 @ID INT,
 @SupplierID INT, 
