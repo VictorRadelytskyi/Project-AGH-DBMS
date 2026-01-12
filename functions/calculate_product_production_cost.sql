@@ -49,7 +49,7 @@ BEGIN
             ri.QuantityRequired,
             c.UnitPrice AS CatalogPrice
         FROM RecipeIngredients ri
-        JOIN Products p ON p.ProductRecipesID = ri.ProductRecipesID
+        JOIN Products p ON p.ProductRecipesID = ri.ProductRecipeID
         JOIN Components c ON ri.ComponentID = c.ID
         WHERE p.ID = @ProductID
     ),
