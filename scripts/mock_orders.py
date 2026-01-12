@@ -2,7 +2,7 @@ import pymssql
 import os, random, json
 import datetime as dt
 
-NO_OF_RECORDS = 5
+NO_OF_RECORDS = 100
 CUSTOMERS = [i for i in range(1, 11)]
 SALES_EMPLOYEES = [2, 8]
 ASSEMBLERS = [3, 4, 5, 6, 7, 11]

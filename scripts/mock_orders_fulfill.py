@@ -6,6 +6,9 @@ WAGE_COST = 60
 ASSEMBLERS = [3, 4, 5, 6, 7, 11]
 PRICE_MARKUP = 0.3
 
+CONN = None
+CURSOR = None
+
 def db_connect():
     conn = pymssql.connect(
         server='janilowski.database.windows.net',
@@ -26,31 +29,22 @@ def random_date(start: dt.datetime, end: dt.datetime) -> dt.datetime:
 
 def execute_query(sql: str, params: tuple) -> list:
 
-    """
-        EXEC PlaceFullOrder 
-        @CustomerID = 1, 
-        @DealerEmployeeID = 2,
-        @AssemblerEmployeeID = 3,
-        @Freight = 15.50,
-        @ItemsJson = N'[{"ProductID": 10, "Quantity": 2}, {"ProductID": 12, "Quantity": 1}]';
-    """
-
-    conn, cursor = db_connect()
-
     try:
 
             # Add the order
-        cursor.execute(sql, params)
+        CURSOR.execute(sql, params)
             
         try:
-            result = cursor.fetchall()
+            result = CURSOR.fetchall()
         except:
             # print("Warning: no results for the query")
             result = None
+
+        CONN.commit()
     
-        conn.commit()
-    finally:
-        conn.close()
+    except Exception as e:
+        print(f"Query failed: {e}")
+        return None
 
     return result
 
@@ -251,17 +245,31 @@ def fulfill_full_order(curr_order: dict) -> None:
 
 def main() -> None:
 
-    orders = get_all_orders()
+    global CONN, CURSOR
 
-    for order in orders:
+    CONN, CURSOR = db_connect()
 
-        print(f"Fulfilling order: {order['ID']}...")
+    try:
+    
+        orders = get_all_orders()
 
-        fulfill_full_order(order)
+        for order in orders:
 
-        print(f"Finished order: {order['ID']}")
+            print(f"Fulfilling order: {order['ID']}...")
 
-    print(f"All finished. {len(orders)} orders fulfilled")
+            fulfill_full_order(order)
+
+            print(f"Finished order: {order['ID']}")
+
+        print(f"All finished. {len(orders)} orders fulfilled")
+
+    finally:
+        CONN.close()
     
 if __name__=="__main__":
+    # Timer
+    import time
+    start = time.perf_counter()
     main()
+    end = time.perf_counter()
+    print(f"Elapsed time: {end - start:.6f} seconds")
