@@ -34,8 +34,8 @@ Error Handling:
 */
 
 CREATE PROCEDURE AddRecipeIngredient
-@ProductRecipeID INT NOT NULL,
-@ComponentID INT NOT NULL,
+@ProductRecipeID INT,
+@ComponentID INT,
 @QuantityRequired DECIMAL(10, 2),
 @ID INT OUTPUT
 AS

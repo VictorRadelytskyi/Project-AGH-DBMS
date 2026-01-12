@@ -66,14 +66,14 @@ BEGIN TRY
         QuantityPerUnit = @QuantityPerUnit,
         UnitPrice = @UnitPrice,
         ProductRecipesID = @ProductRecipesID,
-        VATMultiplier = @VATMultiplier
+        VATMultipler = @VATMultiplier
         WHERE ID = @ID
 
     IF @@ROWCOUNT = 0
     BEGIN 
         ROLLBACK TRAN UpdateProduct;
         DECLARE @msg NVARCHAR(2048) = N'nie znaleziono produktu od podanym ID' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
-        THROW 51000, N'nie znaleziono produktu od podanym ID', 1;
+        THROW 51000, @msg, 1;
         RETURN;
     END
 
@@ -82,8 +82,8 @@ END TRY
 BEGIN CATCH
     IF @@TRANCOUNT > 0
         ROLLBACK TRAN UpdateProduct 
-    DECLARE @msg NVARCHAR(2048) = 'Nie udało się zaktualizować danych produktu:' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
-    THROW 52000, @msg, 1;
+    DECLARE @warning NVARCHAR(2048) = 'Nie udało się zaktualizować danych produktu:' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
+    THROW 52000, @warning, 1;
 END CATCH
 END;
 GO

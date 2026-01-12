@@ -76,7 +76,7 @@ BEGIN TRY
             QuantityPerUnit,
             UnitPrice,
             ProductRecipesID,
-            VATMultiplier
+            VATMultipler
         ) VALUES(
             @SupplierID,
             @CategoryID,

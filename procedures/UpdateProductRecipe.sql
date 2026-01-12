@@ -53,8 +53,8 @@ BEGIN TRY
         IF @@Rowcount = 0
         BEGIN
             ROLLBACK TRAN UpdateProductRecipe;
-            DECLARE @msg NVARCHAR(2048) = N'Nie udało się zaktualizować ProductRecipe' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
-            THROW 51000, @msg, 1;
+            DECLARE @msg1 NVARCHAR(2048) = N'Nie udało się zaktualizować ProductRecipe' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
+            THROW 51000, @msg1, 1;
             RETURN;
         END 
 
@@ -63,8 +63,8 @@ END TRY
 BEGIN CATCH
 IF @@TRANCOUNT > 0
         ROLLBACK TRAN UpdateProductRecipe 
-    DECLARE @msg NVARCHAR(2048) = 'Nie udało się zaktualizować ProductRecipe:' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
-    THROW 52000, @msg, 1;
+    DECLARE @msg2 NVARCHAR(2048) = 'Nie udało się zaktualizować ProductRecipe:' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
+    THROW 52000, @msg2, 1;
 END CATCH
 END;
 GO

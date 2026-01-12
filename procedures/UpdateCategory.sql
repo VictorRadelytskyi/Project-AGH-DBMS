@@ -57,8 +57,8 @@ END TRY
 BEGIN CATCH
 IF @@TRANCOUNT > 0
         ROLLBACK TRAN UpdateCategory 
-    DECLARE @msg NVARCHAR(2048) = 'Nie udało się zaktualizować danych kategorii:' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
-    THROW 52000, @msg, 1;
+    DECLARE @warning NVARCHAR(2048) = 'Nie udało się zaktualizować danych kategorii:' + CHAR(13) + CHAR(10) + ERROR_MESSAGE();
+    THROW 52000, @warning, 1;
 
 END CATCH
 END;
