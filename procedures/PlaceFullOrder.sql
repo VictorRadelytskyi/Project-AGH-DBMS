@@ -2,31 +2,33 @@
 
 PlaceFullOrder
 
-Creates an Order header and associated OrderDetails lines 
-in a single Atomic Transaction.
-                    
-It expects the items list in JSON format.
-It fetches the current UnitPrice from the Products table 
-to ensure pricing integrity.
-    
-Parameters:
+Creates an Order header and associated OrderDetails lines in a single atomic
+transaction.
 
-@CustomerID - ID of the customer
-@DealerEmployeeID - ID of the employee in charge of sales for this order
-@AssemblerEmployeeID - ID of the employee assembling the order
-@Freight    - Shipping cost (default 0)
-@ItemsJson  - JSON string of items. 
+- Expects the items list in JSON format.
+- Fetches the current `UnitPrice` from the `Products` table to ensure pricing integrity.
 
-Format: '[{"ProductID": 1, "Quantity": 5}, ...]'
-    
-Usage:
+**Parameters**
+- `@CustomerID`: ID of the customer.
+- `@DealerEmployeeID`: Employee responsible for sales for this order.
+- `@AssemblerEmployeeID`: Employee assembling the order.
+- `@Freight`: Shipping cost (default `0`).
+- `@ItemsJson`: JSON string of items.
 
+**Items JSON format**
+```json
+[{"ProductID": 1, "Quantity": 5}, ...]
+```
+
+**Usage**
+```sql
 EXEC PlaceFullOrder 
-@CustomerID = 1, 
-@DealerEmployeeID = 2,
-@AssemblerEmployeeID = 3,
-@Freight = 15.50,
-@ItemsJson = N'[{"ProductID": 10, "Quantity": 2}, {"ProductID": 12, "Quantity": 1}]';
+    @CustomerID = 1, 
+    @DealerEmployeeID = 2,
+    @AssemblerEmployeeID = 3,
+    @Freight = 15.50,
+    @ItemsJson = N'[{"ProductID": 10, "Quantity": 2}, {"ProductID": 12, "Quantity": 1}]';
+```
 */
 
 CREATE OR ALTER PROCEDURE [dbo].[PlaceFullOrder]

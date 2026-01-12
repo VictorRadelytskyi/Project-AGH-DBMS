@@ -1,16 +1,19 @@
 /*
 ApplyVolumeDiscount
 
-Calculates the total value of a given order and applies a 
-percentage discount to all items in that order based on 
-defined volume thresholds.
-                    
-Logic:
-	- If Order Total > 5,000  -> Apply 10% (0.10) discount
-	- If Order Total > 1,000  -> Apply 5%  (0.05) discount
-	- Otherwise               -> Apply 0%  (0.00) discount
-    
-Usage:          EXEC ApplyVolumeDiscount @OrderID = 123;
+Calculates the total value of an order and applies a percentage discount to all
+items in that order based on defined volume thresholds. Updates the per-line
+`Discount` so downstream calculations stay consistent.
+
+**Volume tiers**
+- If order total > **5,000** → apply **10% (0.10)**.
+- If order total > **1,000** → apply **5% (0.05)**.
+- Otherwise → apply **0% (0.00)**.
+
+**Usage**
+```sql
+EXEC ApplyVolumeDiscount @OrderID = 123;
+```
 */
 
 CREATE OR ALTER PROCEDURE [dbo].[ApplyVolumeDiscount]
