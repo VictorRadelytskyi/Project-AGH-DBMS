@@ -1,0 +1,13 @@
+site_name: Projekt bazy danych firmy produkcyjno-usługowej.
+docs_dir: docs/sql
+site_dir: site
+
+theme:
+  name: material
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+

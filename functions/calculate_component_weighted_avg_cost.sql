@@ -1,5 +1,5 @@
 /*
-fn_CalculateComponentWeightedAvgCost
+Calculate Component Weighted Average Cost
 
 Calculates the real weighted average cost of a component based on 
 current inventory batches and their specific purchase prices.
@@ -12,7 +12,7 @@ Parameters:
 
 Usage:
 
-SELECT dbo.fn_CalculateComponentWeightedAvgCost(10) AS [AvgUnitCost];
+`SELECT fn_CalculateComponentWeightedAvgCost(10) AS [AvgUnitCost];`
 
 */
 

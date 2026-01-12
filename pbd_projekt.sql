@@ -1,3 +1,9 @@
+/*
+Create tables
+
+This file creates all tables required by the DB schema
+*/
+
 CREATE TABLE [Customers] (
 	[ID] INT NOT NULL IDENTITY,
 	[CustomerDemographicsID] INT,

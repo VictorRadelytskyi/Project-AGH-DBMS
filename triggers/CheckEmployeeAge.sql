@@ -24,7 +24,7 @@ Example Scenarios:
 - NULL BirthDate -> BLOCKED (required field)
 */
 
-CREATE TRIGGER CheckEmployeeAge ON Employees
+CREATE OR ALTER TRIGGER CheckEmployeeAge ON Employees
 AFTER INSERT, UPDATE
 AS
 BEGIN

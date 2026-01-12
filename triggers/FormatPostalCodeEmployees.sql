@@ -30,7 +30,7 @@ Example Transformations:
 - 'SW1A 1AA' -> 'SW1A1AA' (ALLOWED - 7 chars)
 */
 
-CREATE TRIGGER FormatPostalCodeEmployees ON Employees
+CREATE OR ALTER TRIGGER FormatPostalCodeEmployees ON Employees
 AFTER INSERT, UPDATE
 AS
 BEGIN
@@ -43,8 +43,10 @@ BEGIN
         FROM inserted 
         WHERE LEN(REPLACE(REPLACE(PostalCode, '-', ''), ' ', '')) < 5
     )
+    BEGIN
         ROLLBACK TRAN;
         THROW 51000, 'Kod pocztowy musi mieć co najmniej 5 znaków (po usunięciu spacji i myślników).', 1;
+    END;
 
     UPDATE e
     SET PostalCode = REPLACE(REPLACE(i.PostalCode, '-', ''), ' ', '')

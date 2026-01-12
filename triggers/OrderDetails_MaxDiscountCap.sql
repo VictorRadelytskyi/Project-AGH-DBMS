@@ -1,5 +1,4 @@
-/*
-TR_OrderDetails_MaxDiscountCap
+/* Maximum Discount Check
 
 - Standard discounts up to 20% (0.20) are ALLOWED.
 - Full waivers (100% / 1.00) are ALLOWED (e.g., replacements/marketing).

@@ -1,5 +1,5 @@
 /*
-vw_ProductManufacturingComplexity
+Manufacturing Complexity by Product
 
 Ranks products by their manufacturing difficulty based on labor time 
 and the variety of parts required.

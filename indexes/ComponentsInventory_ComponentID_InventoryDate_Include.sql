@@ -1,4 +1,6 @@
 /*
+Total component stock and average cost index
+
 To have better performance in:
 
 Get Total Component Stock Function

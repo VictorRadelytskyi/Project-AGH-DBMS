@@ -1,5 +1,7 @@
-/* 00_db_check.sql
-   Lists all objects in the db of the types:
+/* 
+Database check
+
+Lists all objects in the db of the types:
    1. Tables
    2. Views
    3. Procedures

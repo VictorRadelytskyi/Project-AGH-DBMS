@@ -1,5 +1,5 @@
 /*
-fn_CalculateSupplierTotalStockValue
+Calculate Supplier Total Stock Value
 
 Calculates the total monetary value of all inventory items 
 that were sourced from a specific supplier.
@@ -10,7 +10,7 @@ Parameters:
 
 Usage:
 
-SELECT dbo.fn_CalculateSupplierTotalStockValue(3) AS [TotalActiveExposure];
+`SELECT dbo.fn_CalculateSupplierTotalStockValue(3) AS [TotalActiveExposure];`
 
 */
 

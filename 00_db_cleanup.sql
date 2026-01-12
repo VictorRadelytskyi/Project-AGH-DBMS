@@ -1,5 +1,7 @@
-/* 00_cleanup.sql
-   PERFORMS A FULL DATABASE RESET.
+/*
+Full database reset
+
+PERFORMS A FULL DATABASE RESET.
    1. Drops all Foreign Key Constraints (to unblock table deletion).
    2. Drops all Tables (deletes all DATA and Triggers).
    3. Drops all Procedures, Views, and Functions.

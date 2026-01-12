@@ -1,5 +1,5 @@
 /*
-fn_GetSupplierContactInfoByComponent
+Get Supplier's Contact Info By Component
 
 Retrieves formatted contact details (Company Name, Contact Name, Phone) 
 for the supplier responsible for a specific component.
@@ -10,7 +10,7 @@ Parameters:
 
 Usage:
 
-SELECT dbo.fn_GetSupplierContactInfoByComponent(10) AS [SupplierContact];
+`SELECT dbo.fn_GetSupplierContactInfoByComponent(10) AS [SupplierContact];`
 
 */
 

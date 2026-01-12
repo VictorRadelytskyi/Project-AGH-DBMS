@@ -1,5 +1,5 @@
 /*
-fn_GetEmployeeProductivity
+Get an Employee's Productivity
 
 Retrieves the productivity factor associated with an employee's 
 current job position. Defaults to 1.00 if not found.
@@ -10,7 +10,7 @@ Parameters:
 
 Usage:
 
-SELECT dbo.fn_GetEmployeeProductivity(15) AS [EfficiencyFactor];
+`SELECT dbo.fn_GetEmployeeProductivity(15) AS [EfficiencyFactor];`
 
 */
 
