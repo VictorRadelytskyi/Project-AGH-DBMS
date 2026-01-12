@@ -1,5 +1,4 @@
-/*
-TR_Orders_CheckAssemblerCapacity
+/* Check Assembler Employee Capacity
 
 An employee shouldn't have more orders assigned to them than @MaxConcurrentOrders
 

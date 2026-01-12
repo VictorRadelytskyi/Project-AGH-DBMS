@@ -1,5 +1,5 @@
 /*
-fn_GetEmployeeFullName
+Get Employee's Full Name
 
 Returns the concatenated first and last name of an employee.
 
@@ -9,7 +9,7 @@ Parameters:
 
 Usage:
 
-SELECT dbo.fn_GetEmployeeFullName(15) AS [EmployeeName];
+`SELECT dbo.fn_GetEmployeeFullName(15) AS [EmployeeName];`
 
 */
 

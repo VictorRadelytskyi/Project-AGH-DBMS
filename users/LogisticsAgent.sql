@@ -1,3 +1,7 @@
+/*
+Logistics agents
+*/
+
 -- Role for employees responsible for logistics
 CREATE ROLE Role_LogisticsAgent;
 GO

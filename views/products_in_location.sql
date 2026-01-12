@@ -1,5 +1,4 @@
-/*
-vw_ProductsInLocation
+/* Products In Location
 
 Summarizes the utilization of each stock location within the warehouse. 
 It provides both the total volume of items and the variety of products 

@@ -1,5 +1,5 @@
 /*
-fn_GetTotalComponentsInStock
+Get Total Quantity of a Component In Stock
 
 Calculates the total quantity of a specific component currently held 
 in inventory across all batches.
@@ -10,7 +10,7 @@ Parameters:
 
 Usage:
 
-SELECT dbo.fn_GetTotalComponentsInStock(10) AS [TotalUnitsAvailable];
+`SELECT dbo.fn_GetTotalComponentsInStock(10) AS [TotalUnitsAvailable];`
 
 */
 

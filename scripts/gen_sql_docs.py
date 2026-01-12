@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
+from urllib.parse import quote
 
 DEFAULT_IGNORES = {
     ".git",
@@ -13,8 +15,6 @@ DEFAULT_IGNORES = {
     "venv",
     "__pycache__",
 }
-
-KNOWN_TOP_FOLDERS = ["functions", "views", "procedures", "triggers", "indexes", "users"]
 
 
 def parse_header(sql_text: str) -> tuple[str, str] | None:
@@ -96,14 +96,78 @@ def should_ignore(rel_parts: tuple[str, ...], ignores: set[str]) -> bool:
 
 
 def title_fallback(p: Path) -> str:
-    # "inventory_shortage_list.sql" -> "inventory_shortage_list"
     return p.stem
+
+
+def _rel_link(from_md: Path, to_md: Path) -> str:
+    rel = os.path.relpath(to_md, start=from_md.parent).replace(os.sep, "/")
+    return quote(rel, safe="/#")
+
+
+def _page_title(md_path: Path) -> str:
+    try:
+        for line in md_path.read_text(encoding="utf-8", errors="replace").splitlines():
+            if line.startswith("# "):
+                return line[2:].strip()
+    except FileNotFoundError:
+        pass
+    return md_path.stem
+
+
+def write_folder_indexes(out_root: Path, root_title: str) -> None:
+    dirs = [out_root] + sorted([p for p in out_root.rglob("*") if p.is_dir()])
+
+    for d in dirs:
+        # skip hidden dirs (e.g., .foo)
+        if any(part.startswith(".") for part in d.relative_to(out_root).parts):
+            continue
+
+        idx = d / "index.md"
+
+        subdirs = sorted(
+            [p for p in d.iterdir() if p.is_dir() and not p.name.startswith(".")],
+            key=lambda p: p.name.casefold(),
+        )
+        pages = sorted(
+            [p for p in d.glob("*.md") if p.name != "index.md"],
+            key=lambda p: _page_title(p).casefold(),
+        )
+
+        rel_dir = d.relative_to(out_root)
+        heading = root_title if rel_dir == Path(".") else f"{rel_dir.as_posix()}/"
+
+        lines: list[str] = [f"# {heading}", ""]
+
+        if subdirs:
+            lines += ["## Sekcje", ""]
+            for sd in subdirs:
+                lines.append(f"- [{sd.name}/]({_rel_link(idx, sd / 'index.md')})")
+            lines.append("")
+
+        if pages:
+            lines += ["## Skrypty", ""]
+            for p in pages:
+                lines.append(f"- [{_page_title(p)}]({_rel_link(idx, p)})")
+            lines.append("")
+
+        # Add diagram on the homepage (docs/sql/index.md)
+        if rel_dir == Path("."):
+            diagram = out_root / "MM_VR_JI_DBMS_diagram.png"
+            if diagram.exists():
+                lines += [
+                    "![DBMS diagram](MM_VR_JI_DBMS_diagram.png)",
+                    "",
+                ]
+
+
+        idx.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default=".", help="Repo root to scan (default: .)")
     ap.add_argument("--out", default="docs/sql", help="Output folder (default: docs/sql)")
+    ap.add_argument("--title", default="SQL documentation", help="Title for the docs root index page")
     ap.add_argument("--check", action="store_true", help="Fail if any .sql file lacks a header doc")
     ap.add_argument("--no-source", action="store_true", help="Do not embed SQL source in docs pages")
     ap.add_argument("--ignore", action="append", default=[], help="Additional ignore dir names (repeatable)")
@@ -112,14 +176,18 @@ def main() -> int:
     root = Path(args.root).resolve()
     out_root = (root / args.out).resolve()
     include_source = not args.no_source
+
     ignores = set(DEFAULT_IGNORES) | set(args.ignore)
+    out_top = Path(args.out).parts[0] if Path(args.out).parts else None
+    if out_top:
+        ignores.add(out_top)
 
     out_root.mkdir(parents=True, exist_ok=True)
 
-    # group -> list of (title, link)
-    groups: dict[str, list[tuple[str, str]]] = {"(root)": []}
-    for g in KNOWN_TOP_FOLDERS:
-        groups[g] = []
+    # cleanup old artifacts from previous versions
+    old_root_index = out_root / "root_index.md"
+    if old_root_index.exists():
+        old_root_index.unlink()
 
     missing_headers: list[str] = []
 
@@ -138,7 +206,6 @@ def main() -> int:
         else:
             title, body = parsed
 
-        # output mirrors your tree under docs/sql/
         md_rel = rel.with_suffix(".md")
         out_path = out_root / md_rel
         out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -147,45 +214,7 @@ def main() -> int:
             encoding="utf-8",
         )
 
-        link = f"sql/{md_rel.as_posix()}"  # for MkDocs (docs_dir = docs)
-        top = rel.parts[0] if len(rel.parts) > 1 else "(root)"
-        group = top if top in groups else "(root)"
-        groups[group].append((title, "/" + link))
-
-    # write per-group indices
-    for group, items in groups.items():
-        items.sort(key=lambda x: x[0].casefold())
-
-        if group == "(root)":
-            idx_path = out_root / "root_index.md"
-            heading = "Root-level SQL files"
-        else:
-            idx_path = out_root / group / "index.md"
-            heading = f"{group}/"
-
-        idx_path.parent.mkdir(parents=True, exist_ok=True)
-        idx_path.write_text(
-            f"# {heading}\n\n" + "\n".join([f"- [{t}]({u})" for t, u in items]) + "\n",
-            encoding="utf-8",
-        )
-
-    # write global sql index
-    sql_index = [
-        "# SQL files\n",
-        "## Root\n",
-        "- [Root-level SQL files](/sql/root_index.md)\n",
-        "## Folders\n",
-    ]
-    for g in KNOWN_TOP_FOLDERS:
-        sql_index.append(f"- [{g}/](/sql/{g}/index.md)")
-    sql_index.append("")
-    (out_root / "index.md").write_text("\n".join(sql_index), encoding="utf-8")
-
-    # Ensure docs homepage exists
-    docs_index = root / "docs" / "index.md"
-    if not docs_index.exists():
-        docs_index.parent.mkdir(parents=True, exist_ok=True)
-        docs_index.write_text("# Project SQL documentation\n\n- [SQL files](sql/index.md)\n", encoding="utf-8")
+    write_folder_indexes(out_root, args.title)
 
     if args.check and missing_headers:
         print("Missing SQL header docs in:")
@@ -193,7 +222,6 @@ def main() -> int:
             print(f" - {f}")
         return 2
 
-    print(f"Generated docs for {sum(len(v) for v in groups.values())} SQL files.")
     return 0
 
 

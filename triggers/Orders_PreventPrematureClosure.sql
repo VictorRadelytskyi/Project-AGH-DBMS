@@ -1,5 +1,4 @@
-/*
-TR_Orders_PreventPrematureClosure
+/* Prevent Premature Order Closure
 
 Prevents setting 'FulfillmentFinish' if there are 
 associated OrderDetails where QuantityFulfilled < Quantity.
