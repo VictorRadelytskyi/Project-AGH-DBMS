@@ -1,3 +1,7 @@
+/*
+Foreign Keys
+*/
+
 -- customers
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_Customers_Demographics')
 CREATE NONCLUSTERED INDEX [IX_Customers_Demographics] 

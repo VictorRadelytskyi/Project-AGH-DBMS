@@ -1,4 +1,6 @@
 /*
+Supplier-city index
+
 Speed up grouping suppliers by city for logistical purposes
 
 */
