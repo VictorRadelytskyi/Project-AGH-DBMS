@@ -586,6 +586,33 @@ CREATE TABLE [Products] (
 GO
 
 EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Lista produktów gotowych oferowanych w sprzedaży',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Klucz obcy wskazujący na głównego dostawcę produktu z tabeli Suppliers',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'SupplierID';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Klucz obcy wskazujący na kategorię produktu z tabeli Categories',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'CategoryID';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Nazwa produktu, np. "Krzesło biurowe Executive"',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'ProductName';
+GO
+
+EXEC sys.sp_addextendedproperty
     @name=N'MS_Description', @value=N'Ilość jednostek towaru w pewnym produkcie, n.p. komplet 4 krzeseł - QuantityPerUnit = 1',
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Products',
@@ -597,6 +624,20 @@ EXEC sys.sp_addextendedproperty
     @level0type=N'SCHEMA',@level0name=N'dbo',
     @level1type=N'TABLE',@level1name=N'Products',
     @level2type=N'COLUMN',@level2name=N'UnitPrice';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Klucz obcy wskazujący na przepis produkcyjny z tabeli ProductRecipes',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'ProductRecipesID';
+GO
+
+EXEC sys.sp_addextendedproperty
+    @name=N'MS_Description', @value=N'Mnożnik VAT dla produktu, np. 1.23 dla VAT 23%',
+    @level0type=N'SCHEMA',@level0name=N'dbo',
+    @level1type=N'TABLE',@level1name=N'Products',
+    @level2type=N'COLUMN',@level2name=N'VATMultipler';
 GO
 
 CREATE TABLE [Categories] (
@@ -712,8 +753,6 @@ EXEC sys.sp_addextendedproperty
     @level1type=N'TABLE',@level1name=N'Orders',
     @level2type=N'COLUMN',@level2name=N'AssemblerEmployeeID'
 GO
-
-/* Todo: wybrać konkretne materiały wraz z jednostką w której je mierzymy, n.p. gramy */
 
 ALTER TABLE [Customers]
 ADD CONSTRAINT [FK_Customers_CustomerDemographics]
