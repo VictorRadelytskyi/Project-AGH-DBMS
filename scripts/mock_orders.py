@@ -33,19 +33,30 @@ def random_product_json() -> str:
 
     product_list = []
 
-    n = random.randrange(2, 6)
+    n = min(int(random.paretovariate(1.16)), 10) # Mean order size = 2.3
     products = random.sample(PRODUCTS, n)
 
     for i in range(n):
 
+        random_quantity = max(int(random.paretovariate(1.16) * 0.6), 1) # Mean product quantity = 2
+
         product_list.append(
             {
                 "ProductID": products[i],
-                "Quantity": abs(int(random.normalvariate(15, 3)))
+                "Quantity": random_quantity
             }
         )
 
     return json.dumps(product_list)
+
+def random_freight_cost():
+
+    if random.random() < 0.70:
+        premium = random.uniform(-0.10, 0.10)
+    else:
+        premium = random.uniform(1, 4)
+        
+    return round(FREIGHT_AVG * (1 + premium), 2)
 
 def execute_query(sql: str, sql2: str, param_list: list) -> None:
 
@@ -101,7 +112,7 @@ def main():
                 random.choice(CUSTOMERS),
                 random.choice(SALES_EMPLOYEES),
                 random.choice(ASSEMBLERS),
-                round(random.normalvariate(FREIGHT_AVG, FREIGHT_AVG / 5), 2),
+                random_freight_cost(),
                 random_product_json(),
             )
         )
