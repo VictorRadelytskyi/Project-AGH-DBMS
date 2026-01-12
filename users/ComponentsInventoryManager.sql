@@ -1,4 +1,6 @@
 /*
+Components Inventory Manager
+
 Components inventory warehouse floor staff that manages and monitors components stock, orders missing or low stock components.
 */
 

@@ -1,3 +1,5 @@
+-- Sales Agent
+
 -- Front-office staff who manage client relationships and place orders.
 
 CREATE ROLE Role_SalesAgent;
