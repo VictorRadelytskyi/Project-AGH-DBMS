@@ -1,12 +1,12 @@
 /*
 
-fn_EstimateManHours
+Estimate Man Hours
 
 Calculates total man-hours required based on the product recipe.
     
 Usage:
 -- How many man-hours to build 50 units of Product 1?
-SELECT dbo.fn_EstimateManHours(1, 50) AS TotalManHours;
+`SELECT dbo.fn_EstimateManHours(1, 50) AS TotalManHours;`
 */
 
 CREATE FUNCTION dbo.fn_EstimateManHours

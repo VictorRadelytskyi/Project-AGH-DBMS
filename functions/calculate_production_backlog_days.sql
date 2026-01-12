@@ -1,5 +1,5 @@
 /*
-fn_CalculateProductionBacklogDays
+Calculate Production Backlog Days
 
 Calculates how many working days are required to fulfill 
 ALL currently listed orders, based on the total workforce 
@@ -12,7 +12,7 @@ Logic:
 3. Work Needed / Daily Capacity           = Days to Clear Backlog
 
 Usage:
-SELECT dbo.fn_CalculateProductionBacklogDays() AS ProductionDaysLeft;
+`SELECT fn_CalculateProductionBacklogDays() AS ProductionDaysLeft;`
 
 */
 

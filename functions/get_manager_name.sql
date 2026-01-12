@@ -1,5 +1,5 @@
 /*
-fn_GetManagerName
+Get Someone's Manager's Name
 
 Retrieves the full name of the direct supervisor (Manager) 
 for a given employee.
@@ -10,7 +10,7 @@ Parameters:
 
 Usage:
 
-SELECT dbo.fn_GetManagerName(15) AS [ManagerName];
+`SELECT dbo.fn_GetManagerName(15) AS [ManagerName];`
 
 */
 
