@@ -1,5 +1,4 @@
-/*
-vw_InventoryShortageList
+/* Inventory Shortage List
 
 Provides a real-time list of all products that are currently 
 out of stock across the entire warehouse system.

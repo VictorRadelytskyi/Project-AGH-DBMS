@@ -1,5 +1,4 @@
-/*
-vw_CategoryStockValuation
+/* Valuate Stock Categories 
 
 Provides a strategic summary of inventory investment and manufacturing 
 effort aggregated by category.
