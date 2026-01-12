@@ -29,8 +29,8 @@ echo "=========================================="
 
 # Step 1: Clean up existing database objects
 echo ">>> Cleaning up existing database objects..."
-if [ -f "00_db_cleanup_working.sql" ]; then
-    sqlcmd -S "$DB_SERVER" -d "$DB_NAME" -U "$DB_USER" -P "$DB_PASSWORD" -I -b -i "00_db_cleanup_working.sql"
+if [ -f "00_db_cleanup_working_VR.sql" ]; then
+    sqlcmd -S "$DB_SERVER" -d "$DB_NAME" -U "$DB_USER" -P "$DB_PASSWORD" -I -b -i "00_db_cleanup_working_VR.sql"
     if [ $? -ne 0 ]; then
         echo "!!!! WARNING: Cleanup script had errors. Continuing anyway. !!!!"
     fi
