@@ -1,5 +1,5 @@
 /*
-fn_GetProductProductionCost
+Get Product Production Cost
 
 Calculates the total manufacturing cost of a product by simulating 
 the FIFO (First-In, First-Out) consumption of components and adding 

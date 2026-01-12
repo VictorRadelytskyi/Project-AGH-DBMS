@@ -1,5 +1,5 @@
 /*
-VIEW: vw_InventoryAndProductionPlanning
+Inventory And Production Planning
 
 PURPOSE: 
 Provides a real-time audit of physical stock availability against outstanding 

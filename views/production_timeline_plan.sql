@@ -1,5 +1,5 @@
 /*
-VIEW: vw_ProductionTimelinePlan
+Production Timeline Plan
 
 PURPOSE: 
 Acts as a Master Production Schedule (MPS) for the manufacturing department. 

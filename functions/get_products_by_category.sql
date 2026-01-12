@@ -1,5 +1,5 @@
 /*
-fn_GetProductsByCategory
+Get Products By Category
 
 Returns a list of all products within a specific category along with 
 their current total warehouse stock.

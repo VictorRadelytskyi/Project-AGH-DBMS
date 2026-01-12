@@ -1,5 +1,5 @@
 /*
-fn_GetTotalProductStock
+Get Total Product Stock
 
 Aggregates the current stock levels of a specific product 
 across all warehouse locations defined in the system.
