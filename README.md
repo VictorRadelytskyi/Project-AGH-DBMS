@@ -1,6 +1,6 @@
 # Projekt bazy danych firmy produkcyjnej.
 
-[Dokumentacja](https://victorradelytskyi.github.io/Project-AGH-DBMS/sql)
+[Dokumentacja](https://victorradelytskyi.github.io/Project-AGH-DBMS/)
 
 Autorzy poszczególnych zbiorów tabel:
 - **Marcin Małek**: Employees, EmployeePositions, Suppliers, Components
