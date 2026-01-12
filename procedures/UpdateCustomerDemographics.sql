@@ -1,25 +1,25 @@
 /*
-
 UpdateCustomerDemographics
 
-Upserts (update if exists, insert if doesn't exist) demographic information for a specific customer.
+**Description:** Upserts (update if exists, insert if doesn't exist) demographic information for a specific customer.
 
-Parameters:
+## Parameters
 
-@CustomerID     - ID of the customer to update (must be an existing customer)
-@AgeGroup       - Optional. 1=18–24, 2=25–34, 3=35-44, 4=45-54, 5=55+.
-@HasChildren    - Optional. 1 (True) or 0 (False).
-@IncomeGroup    - Optional. 1=Low, 2=Medium, 3=High.
-@IsCityResident - Optional. 1 (True) or 0 (False).
+- `@CustomerID`: ID of the customer to update (must be an existing customer)
+- `@AgeGroup`: Optional. 1=18–24, 2=25–34, 3=35-44, 4=45-54, 5=55+.
+- `@HasChildren`: Optional. 1 (True) or 0 (False).
+- `@IncomeGroup`: Optional. 1=Low, 2=Medium, 3=High.
+- `@IsCityResident`: Optional. 1 (True) or 0 (False).
+## Usage
 
-Usage:
-
+```sql
 EXEC UpdateCustomerDemographics
-    @CustomerID = 10,
-    @AgeGroup = 2,
-    @HasChildren = 1,
-    @IncomeGroup = 3,
-    @IsCityResident = 1;
+@CustomerID = 10,
+@AgeGroup = 2,
+@HasChildren = 1,
+@IncomeGroup = 3,
+@IsCityResident = 1;
+```
 */
 
 CREATE OR ALTER PROCEDURE dbo.UpdateCustomerDemographics

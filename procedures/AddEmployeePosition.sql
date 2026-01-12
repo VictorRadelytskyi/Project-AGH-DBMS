@@ -1,26 +1,27 @@
 /*
 AddEmployeePosition
 
-Adds a new job position definition to the database.
+**Description:** Adds a new job position definition to the database.
 
-Parameters:
+## Parameters
 
-@positionName        - Name of the job position (e.g., 'Senior Carpenter')
-@positionDescription - Detailed description of responsibilities
-@productivityFactor  - Efficiency multiplier (Default 1.0). 
-                        Values > 1.0 indicate higher than average output.
-@ID                  - OUTPUT. Returns the generated EmployeePositionID
+- `@positionName`: Name of the job position (e.g., 'Senior Carpenter')
+- `@positionDescription`: Detailed description of responsibilities
+- `@productivityFactor`: Efficiency multiplier (Default 1.0).
+Values > 1.0 indicate higher than average output.
 
-Usage:
+- `@ID`: OUTPUT. Returns the generated EmployeePositionID
+## Usage
 
+```sql
 DECLARE @NewPositionID INT;
 
-EXEC AddEmployeePosition 
-    @positionName = 'Monter',
-    @positionDescription = '...',
-    @productivityFactor = 1.25, -- 25% more efficient than base
-    @ID = @NewPositionID OUTPUT;
-
+EXEC AddEmployeePosition
+@positionName = 'Monter',
+@positionDescription = '...',
+@productivityFactor = 1.25, -- 25% more efficient than base
+@ID = @NewPositionID OUTPUT;
+```
 */
 
 CREATE PROCEDURE AddEmployeePosition @positionName varchar(255),

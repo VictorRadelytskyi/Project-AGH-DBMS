@@ -1,17 +1,19 @@
 /*
 Manufacturing Complexity by Product
 
-Ranks products by their manufacturing difficulty based on labor time 
-and the variety of parts required.
-    
-Logic:
-1. Joins Products to Recipes and RecipeIngredients.
-2. Calculates the variety of parts using COUNT(ri.ComponentID).
-3. ComplexityIndex = (LabourHours * Number of Unique Components).
-   Higher numbers indicate items that are more "difficult" or time-consuming to manage.
+**Description:** Ranks products by manufacturing difficulty based on required labor time and the variety of parts.
 
-Usage:
+## Logic
+
+1. Join `Products` to `ProductRecipes` and `RecipeIngredients`.
+2. Count distinct components required per product.
+3. Compute `ComplexityIndex = LabourHours * component count`; higher values indicate more complex items.
+
+## Usage
+
+```sql
 SELECT * FROM vw_ProductManufacturingComplexity ORDER BY ComplexityIndex DESC;
+```
 */
 
 CREATE VIEW vw_ProductManufacturingComplexity

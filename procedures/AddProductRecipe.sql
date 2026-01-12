@@ -1,3 +1,24 @@
+/*
+AddProductRecipe
+
+**Description:** Creates a new production recipe with its labor estimate and returns the generated recipe identifier.
+
+## Parameters
+
+- `@RecipeName`: Optional human-friendly recipe name.
+- `@LabourHours`: Estimated labor hours required to produce one unit.
+- `@ID`: Output parameter populated with the new recipe ID.
+
+## Usage
+
+```sql
+EXEC AddProductRecipe
+    @RecipeName = 'Widget Assembly',
+    @LabourHours = 4.5,
+    @ID = @NewRecipeID OUTPUT;
+```
+*/
+
 CREATE PROCEDURE AddProductRecipe
 @RecipeName VARCHAR(255),
 @LabourHours DECIMAL(10, 2) NOT NULL,
@@ -34,4 +55,3 @@ BEGIN CATCH
 END CATCH
 END;
 GO
-

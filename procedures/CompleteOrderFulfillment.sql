@@ -1,17 +1,18 @@
 /*
 CompleteOrderFulfillment
 
-Finalizes the order fulfillment process by setting the FulfillmentFinish timestamp.
-The order must be fully complete before closing.
+**Description:** Finalizes order fulfillment by setting the `FulfillmentFinish` timestamp after ensuring the order is complete.
 
-Checks performed:
+## Checks performed
+
 - Order must exist.
-- Order fulfillment must have started (FulfillmentStart IS NOT NULL).
-- Order must not already be finished (Idempotency check).
-- All order items must be fully fulfilled (QuantityFulfilled == Quantity).
+- Fulfillment must have started (`FulfillmentStart` is not null).
+- Order must not already be finished (idempotency check).
+- All order items must be fully fulfilled (`QuantityFulfilled == Quantity`).
 
-Parameters:
-@OrderID - ID of the order to finalize.
+## Parameters
+
+- `@OrderID`: ID of the order to finalize.
 */
 
 CREATE OR ALTER PROCEDURE [dbo].[CompleteOrderFulfillment]

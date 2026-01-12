@@ -1,3 +1,26 @@
+/*
+UpdateCategory
+
+**Description:** Updates category details, including name, description, and picture, for an existing category.
+
+## Parameters
+
+- `@ID`: Identifier of the category to update.
+- `@CategoryName`: New category name.
+- `@Description`: Optional updated description.
+- `@Picture`: Optional updated image blob.
+
+## Usage
+
+```sql
+EXEC UpdateCategory
+    @ID = 3,
+    @CategoryName = 'Hardware',
+    @Description = 'Updated description',
+    @Picture = NULL;
+```
+*/
+
 CREATE PROCEDURE UpdateCategory
 @ID INT NOT NULL,
 @CategoryName VARCHAR(250) NOT NULL, 

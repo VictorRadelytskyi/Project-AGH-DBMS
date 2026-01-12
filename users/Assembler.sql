@@ -1,8 +1,9 @@
 /*
 Assembler
 
-Production floor staff who actually manufacture the products.
+**Description:** Production floor staff who actually manufacture the products.
 */
+
 CREATE ROLE Role_Assembler;
 GO
 

@@ -1,3 +1,13 @@
+/*
+CheckReportsToEmployee
+
+**Description:** Prevents employees from being assigned as their own manager during insert or update operations.
+
+## Behavior
+
+- Blocks changes where `ReportsTo` references the same employee ID.
+*/
+
 CREATE OR ALTER TRIGGER CheckReportsToEmployee ON Employees
 AFTER INSERT, UPDATE
 AS

@@ -1,3 +1,34 @@
+/*
+UpdateProduct
+
+**Description:** Updates supplier, category, pricing, recipe, and VAT details for an existing product.
+
+## Parameters
+
+- `@ID`: Identifier of the product to update.
+- `@SupplierID`: New supplier reference.
+- `@CategoryID`: Category to assign.
+- `@ProductName`: Updated product name.
+- `@QuantityPerUnit`: Units per package.
+- `@UnitPrice`: Net unit price.
+- `@ProductRecipesID`: Linked recipe identifier.
+- `@VATMultiplier`: VAT multiplier applied to the product.
+
+## Usage
+
+```sql
+EXEC UpdateProduct
+    @ID = 1,
+    @SupplierID = 2,
+    @CategoryID = 3,
+    @ProductName = 'Updated Widget',
+    @QuantityPerUnit = 12,
+    @UnitPrice = 24.50,
+    @ProductRecipesID = 4,
+    @VATMultiplier = 1.23;
+```
+*/
+
 CREATE PROCEDURE UpdateProduct
 @ID INT NOT NULL,
 @SupplierID INT NOT NULL, 

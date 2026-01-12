@@ -1,3 +1,13 @@
+/*
+CheckEmployeeAge
+
+**Description:** Ensures that newly inserted or updated employees are at least 18 years old and have a birth date.
+
+## Behavior
+
+- Rolls back the transaction if `BirthDate` is missing or indicates an age under 18 years.
+*/
+
 CREATE OR ALTER TRIGGER CheckEmployeeAge ON Employees
 AFTER INSERT, UPDATE
 AS
@@ -17,4 +27,3 @@ BEGIN
         THROW 51000, N'Nie można zatrudnić niepełnoletniego pracownika!!', 1;
     END
 END;
-

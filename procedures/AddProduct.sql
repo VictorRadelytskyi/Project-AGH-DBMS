@@ -1,3 +1,34 @@
+/*
+AddProduct
+
+**Description:** Inserts a new product with supplier, category, pricing, and recipe details and returns its generated identifier.
+
+## Parameters
+
+- `@SupplierID`: Supplier providing the product.
+- `@CategoryID`: Category the product belongs to.
+- `@ProductName`: Name of the product.
+- `@QuantityPerUnit`: Units contained in one package.
+- `@UnitPrice`: Price per unit (net).
+- `@ProductRecipesID`: Linked recipe describing production steps.
+- `@VATMultiplier`: VAT multiplier applied to the product.
+- `@ID`: Output parameter populated with the new product ID.
+
+## Usage
+
+```sql
+EXEC AddProduct
+    @SupplierID = 1,
+    @CategoryID = 2,
+    @ProductName = 'Custom Widget',
+    @QuantityPerUnit = 10,
+    @UnitPrice = 19.99,
+    @ProductRecipesID = 3,
+    @VATMultiplier = 1.23,
+    @ID = @NewProductID OUTPUT;
+```
+*/
+
 CREATE PROCEDURE AddProduct 
 @SupplierID INT NOT NULL, 
 @CategoryID INT NOT NULL, 

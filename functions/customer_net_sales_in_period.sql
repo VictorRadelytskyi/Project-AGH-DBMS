@@ -1,9 +1,15 @@
--- Customer Net Sales in Period
--- Scalar function returning the net sales of a given customer in a given period
---
--- Usage:
---SELECT
---	dbo.fn_CustomerNetSalesInPeriod(1, '2023-01-01', '2023-12-31') AS NetSales2023;
+/*
+Customer Net Sales in Period
+
+**Description:** Scalar function returning the net sales of a given customer in a given period
+
+## Usage
+
+```sql
+SELECT
+dbo.fn_CustomerNetSalesInPeriod(1, '2023-01-01', '2023-12-31') AS NetSales2023;
+```
+*/
 
 -- Helper:
 -- SELECT * FROM dbo.fn_CustomerOrdersInPeriod(3, '2023-01-01', '2023-12-31');

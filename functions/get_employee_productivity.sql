@@ -1,17 +1,16 @@
 /*
 Get an Employee's Productivity
 
-Retrieves the productivity factor associated with an employee's 
-current job position. Defaults to 1.00 if not found.
+**Description:** Retrieves the productivity factor associated with an employee's current job position. Defaults to 1.00 if not found.
 
-Parameters:
+## Parameters
 
-@EmployeeID - ID of the employee
+- `@EmployeeID`: ID of the employee
+## Usage
 
-Usage:
-
-`SELECT dbo.fn_GetEmployeeProductivity(15) AS [EfficiencyFactor];`
-
+```sql
+SELECT dbo.fn_GetEmployeeProductivity(15) AS [EfficiencyFactor];
+```
 */
 
 CREATE FUNCTION dbo.fn_GetEmployeeProductivity (@EmployeeID INT)

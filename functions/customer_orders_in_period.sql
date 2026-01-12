@@ -1,5 +1,8 @@
--- Customer Orders in Period
--- Function returning a table of a given customers order in a given timeframe
+/*
+Customer Orders in Period
+
+**Description:** Function returning a table of a given customers order in a given timeframe
+*/
 
 -- Usage:
 --SELECT * FROM fn_CustomerOrdersInPeriod(3, '2023-01-01', '2023-12-31');

@@ -1,6 +1,8 @@
--- Active Employees List
+/*
+Active Employees List
 
--- Prints a list of each employee with productivity greater than 0, their productivity and manager name
+**Description:** Lists employees with productivity greater than zero along with their productivity factor and manager name.
+*/
 
 CREATE VIEW dbo.vw_ActiveEmployeesList AS
 SELECT

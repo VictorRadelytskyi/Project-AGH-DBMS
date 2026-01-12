@@ -1,8 +1,7 @@
-/* Prevent Premature Order Closure
+/*
+Prevent Premature Order Closure
 
-Prevents setting 'FulfillmentFinish' if there are 
-associated OrderDetails where QuantityFulfilled < Quantity.
-
+**Description:** Prevents setting 'FulfillmentFinish' if there are associated OrderDetails where QuantityFulfilled < Quantity.
 */
 
 CREATE OR ALTER TRIGGER [dbo].[TR_Orders_PreventPrematureClosure]

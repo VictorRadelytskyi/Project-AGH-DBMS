@@ -1,18 +1,16 @@
 /*
 Get Component's Inventory Age in Days
 
-Calculates the number of days the oldest active batch of a component 
-has been in the inventory (FIFO tracking). Only considers batches 
-with positive stock.
+**Description:** Calculates the number of days the oldest active batch of a component has been in the inventory (FIFO tracking). Only considers batches with positive stock.
 
-Parameters:
+## Parameters
 
-@ComponentID - ID of the component to check
+- `@ComponentID`: ID of the component to check
+## Usage
 
-Usage:
-
-`SELECT dbo.fn_GetComponentInventoryAgeDays(5) AS [DaysInStock];`
-
+```sql
+SELECT dbo.fn_GetComponentInventoryAgeDays(5) AS [DaysInStock];
+```
 */
 
 CREATE FUNCTION dbo.fn_GetComponentInventoryAgeDays (@ComponentID INT)

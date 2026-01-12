@@ -1,3 +1,24 @@
+/*
+UpdateProductRecipe
+
+**Description:** Updates an existing product recipe name and labor hours estimate.
+
+## Parameters
+
+- `@ID`: Identifier of the recipe to update.
+- `@RecipeName`: New recipe name.
+- `@LabourHours`: Updated labor-hour estimate per unit.
+
+## Usage
+
+```sql
+EXEC UpdateProductRecipe
+    @ID = 5,
+    @RecipeName = 'Widget Assembly v2',
+    @LabourHours = 5.25;
+```
+*/
+
 CREATE PROCEDURE UpdateProductRecipe
 @ID INT,
 @RecipeName VARCHAR(255),

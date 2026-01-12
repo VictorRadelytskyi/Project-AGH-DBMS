@@ -1,5 +1,11 @@
 /*
 Foreign Keys
+
+**Description:** Supporting nonclustered indexes to accelerate foreign key lookups across customer, order, employee, component, product, and warehouse relationships.
+
+## Notes
+
+- Indexes are created conditionally to avoid conflicts on existing environments.
 */
 
 -- customers

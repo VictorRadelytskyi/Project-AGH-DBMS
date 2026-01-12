@@ -1,23 +1,24 @@
-/* Products In Location
+/*
+Products In Location
 
-Summarizes the utilization of each stock location within the warehouse. 
-It provides both the total volume of items and the variety of products 
-stored in specific areas.
-    
-Logic:
-1. Groups data by StockLocation from the Warehouse table.
-2. Sum(UnitsInStock): Calculates the total quantity of all physical items 
-   in that specific aisle, shelf, or bin.
-3. Count(DISTINCT ProductID): Identifies how many different types of 
-   products are sharing that location.
+**Description:** Summarizes how each warehouse stock location is utilized, showing both total volume and product variety.
 
-Usage:
+## Logic
+
+- Groups data by `StockLocation` from `Warehouse`.
+- Sums `UnitsInStock` to show total quantity stored in that slot.
+- Counts distinct `ProductID` values to show how many product types share the location.
+
+## Usage
+
+```sql
 SELECT * FROM vw_ProductsInLocation;
+```
 
-Business Value:
-- Space Management: Identify which locations are nearly empty or overcrowded.
-- Audit/Inventory: Quickly see how many unique SKUs a picker should expect 
-  to find at a specific location.
+## Business Value
+
+- Space management: identify locations that are empty or overcrowded.
+- Audit/Inventory: quickly see how many unique SKUs a picker should expect in a given location.
 */
 
 CREATE VIEW vw_ProductsInLocation 

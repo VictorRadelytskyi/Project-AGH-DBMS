@@ -1,8 +1,7 @@
 /*
 Supplier-city index
 
-Speed up grouping suppliers by city for logistical purposes
-
+**Description:** Speed up grouping suppliers by city for logistical purposes
 */
 
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_Suppliers_City')

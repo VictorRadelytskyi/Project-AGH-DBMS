@@ -1,10 +1,15 @@
--- Order Net Value
--- Scalar function returning the net value of a given order
--- Uses Products.VATMultipler and net UnitPrice from OrderDetails
---
--- Usage:
---SELECT dbo.fn_OrderNetValue(1) AS OrderNetValue;
--- (using `dbo.` to make sure you're executing the function in the correct DB)
+/*
+Order Net Value
+
+**Description:** Scalar function returning the net value of a given order Uses Products.VATMultipler and net UnitPrice from OrderDetails
+
+## Usage
+
+```sql
+SELECT dbo.fn_OrderNetValue(1) AS OrderNetValue;
+(using `dbo.` to make sure you're executing the function in the correct DB)
+```
+*/
 
 CREATE FUNCTION dbo.fn_OrderNetValue (@OrderID INT)
 RETURNS DECIMAL(18,2)

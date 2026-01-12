@@ -1,6 +1,8 @@
--- Customers With Segments View
+/*
+Customers With Segments View
 
--- Prints a list of customers grouped by their demographic data including age, income, residency, children and other data.
+**Description:** Lists customers together with demographic segmentation attributes such as age group, income group, children, and residency.
+*/
 
 CREATE VIEW vw_CustomersWithSegments
 AS

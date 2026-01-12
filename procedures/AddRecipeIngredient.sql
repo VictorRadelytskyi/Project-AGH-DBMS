@@ -1,3 +1,26 @@
+/*
+AddRecipeIngredient
+
+**Description:** Adds a component requirement to a product recipe and returns the new recipe ingredient identifier.
+
+## Parameters
+
+- `@ProductRecipeID`: Recipe that the component belongs to.
+- `@ComponentID`: Component required by the recipe.
+- `@QuantityRequired`: Amount of the component needed per recipe.
+- `@ID`: Output parameter populated with the new recipe ingredient ID.
+
+## Usage
+
+```sql
+EXEC AddRecipeIngredient
+    @ProductRecipeID = 5,
+    @ComponentID = 12,
+    @QuantityRequired = 3.5,
+    @ID = @NewIngredientID OUTPUT;
+```
+*/
+
 CREATE PROCEDURE AddRecipeIngredient
 @ProductRecipeID INT NOT NULL,
 @ComponentID INT NOT NULL,

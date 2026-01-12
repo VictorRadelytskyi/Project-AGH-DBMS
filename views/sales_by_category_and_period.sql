@@ -1,6 +1,8 @@
--- Sales by Category and Period View
+/*
+Sales by Category and Period View
 
--- Prints sales results grouped by date (year, month, week) and product category.
+**Description:** Aggregates net sales, units sold, and order counts by year, month, week, and product category.
+*/
 
 CREATE VIEW dbo.vw_SalesByCategoryAndPeriod
 AS

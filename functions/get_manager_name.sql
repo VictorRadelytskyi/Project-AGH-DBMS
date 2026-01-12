@@ -1,17 +1,16 @@
 /*
 Get Someone's Manager's Name
 
-Retrieves the full name of the direct supervisor (Manager) 
-for a given employee.
+**Description:** Retrieves the full name of the direct supervisor (Manager) for a given employee.
 
-Parameters:
+## Parameters
 
-@EmployeeID - ID of the employee whose manager is being looked up
+- `@EmployeeID`: ID of the employee whose manager is being looked up
+## Usage
 
-Usage:
-
-`SELECT dbo.fn_GetManagerName(15) AS [ManagerName];`
-
+```sql
+SELECT dbo.fn_GetManagerName(15) AS [ManagerName];
+```
 */
 
 CREATE FUNCTION dbo.fn_GetManagerName (@EmployeeID INT)

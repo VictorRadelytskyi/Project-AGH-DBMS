@@ -1,8 +1,15 @@
 /*
 Logistics agents
+
+**Description:** Defines the logistics agent role for managing warehouse stock, supplier data, and component inventory.
+
+## Permissions
+
+- Read access: `Warehouse`, `Suppliers`, `Components`, `ComponentsInventory`.
+- Execute access: `AddComponent`, `UpdateComponent`, `AddComponentInventory`, `AddProductToWarehouse`, `AddSupplier`, `UpdateSupplier`, `RemoveComponent`.
+- Monitoring access: `vw_CategoryStockValuation`, `vw_InventoryShortageList`, `vw_ProductsInLocation`.
 */
 
--- Role for employees responsible for logistics
 CREATE ROLE Role_LogisticsAgent;
 GO
 

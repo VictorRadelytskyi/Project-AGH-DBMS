@@ -1,17 +1,13 @@
 /*
 UpdateOrderItemProgress
 
-Updates the fulfillment status of a specific item in an order.
+**Description:** Updates the fulfillment status of a specific item in an order. Checks performed: Prevents setting quantity < 0. Prevents setting quantity > Ordered Quantity. Ensures the order is actually in progress (Started but not Finished).
 
-Checks performed:
-	Prevents setting quantity < 0.
-	Prevents setting quantity > Ordered Quantity.
-	Ensures the order is actually in progress (Started but not Finished).
+## Parameters
 
-Parameters:
-@OrderID   - The Order ID.
-@ProductID - The Product ID being updated.
-@NewQuantityFulfilled - The new total amount fulfilled (e.g., 3).
+- `@OrderID`: The Order ID.
+- `@ProductID`: The Product ID being updated.
+- `@NewQuantityFulfilled`: The new total amount fulfilled (e.g., 3).
 */
 
 CREATE OR ALTER PROCEDURE [dbo].[UpdateOrderItemProgress]

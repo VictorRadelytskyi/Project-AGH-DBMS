@@ -1,17 +1,16 @@
 /*
 Get Total Quantity of a Component In Stock
 
-Calculates the total quantity of a specific component currently held 
-in inventory across all batches.
+**Description:** Calculates the total quantity of a specific component currently held in inventory across all batches.
 
-Parameters:
+## Parameters
 
-@ComponentID - ID of the component to aggregate
+- `@ComponentID`: ID of the component to aggregate
+## Usage
 
-Usage:
-
-`SELECT dbo.fn_GetTotalComponentsInStock(10) AS [TotalUnitsAvailable];`
-
+```sql
+SELECT dbo.fn_GetTotalComponentsInStock(10) AS [TotalUnitsAvailable];
+```
 */
 
 CREATE FUNCTION dbo.fn_GetTotalComponentsInStock (@ComponentID INT)

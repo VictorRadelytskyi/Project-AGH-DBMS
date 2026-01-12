@@ -1,3 +1,26 @@
+/*
+AddCategory
+
+**Description:** Creates a new product category and returns its generated identifier.
+
+## Parameters
+
+- `@CategoryName`: Name of the category to create.
+- `@Description`: Optional category description.
+- `@Picture`: Optional image associated with the category.
+- `@ID`: Output parameter populated with the new category ID.
+
+## Usage
+
+```sql
+EXEC AddCategory
+    @CategoryName = 'Beverages',
+    @Description = 'Hot and cold drinks',
+    @Picture = NULL,
+    @ID = @NewCategoryID OUTPUT;
+```
+*/
+
 CREATE PROCEDURE AddCategory
 @CategoryName VARCHAR(250), 
 @Description VARCHAR(8000), 
@@ -33,4 +56,3 @@ BEGIN CATCH
 END CATCH
 END;
 GO
-

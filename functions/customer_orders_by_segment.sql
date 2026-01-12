@@ -1,5 +1,8 @@
--- Customers by Segment
--- Returns a table of customers that fit given demographic criteria
+/*
+Customers by Segment
+
+**Description:** Returns a table of customers that fit given demographic criteria
+*/
 
 -- Usage:
 

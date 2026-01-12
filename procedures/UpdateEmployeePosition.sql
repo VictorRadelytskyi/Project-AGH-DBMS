@@ -1,23 +1,23 @@
 /*
 UpdateEmployeePosition
 
-Updates the definition of an existing job position.
+**Description:** Updates the definition of an existing job position.
 
-Parameters:
+## Parameters
 
-@ID                  - ID of the position to update
-@positionName        - New name of the job position
-@positionDescription - New description of responsibilities
-@productivityFactor  - New efficiency multiplier (e.g., 1.10)
+- `@ID`: ID of the position to update
+- `@positionName`: New name of the job position
+- `@positionDescription`: New description of responsibilities
+- `@productivityFactor`: New efficiency multiplier (e.g., 1.10)
+## Usage
 
-Usage:
-
-EXEC UpdateEmployeePosition 
-    @ID = 2,
-    @positionName = '...',
-    @positionDescription = '...',
-    @productivityFactor = 1.50;
-
+```sql
+EXEC UpdateEmployeePosition
+@ID = 2,
+@positionName = '...',
+@positionDescription = '...',
+@productivityFactor = 1.50;
+```
 */
 
 CREATE PROCEDURE UpdateEmployeePosition @ID INT,

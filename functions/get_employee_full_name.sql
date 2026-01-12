@@ -1,16 +1,16 @@
 /*
 Get Employee's Full Name
 
-Returns the concatenated first and last name of an employee.
+**Description:** Returns the concatenated first and last name of an employee.
 
-Parameters:
+## Parameters
 
-@EmployeeID - ID of the employee
+- `@EmployeeID`: ID of the employee
+## Usage
 
-Usage:
-
-`SELECT dbo.fn_GetEmployeeFullName(15) AS [EmployeeName];`
-
+```sql
+SELECT dbo.fn_GetEmployeeFullName(15) AS [EmployeeName];
+```
 */
 
 CREATE FUNCTION dbo.fn_GetEmployeeFullName (@EmployeeID INT)

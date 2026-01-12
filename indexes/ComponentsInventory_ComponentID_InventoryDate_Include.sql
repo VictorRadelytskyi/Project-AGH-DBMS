@@ -1,10 +1,7 @@
 /*
 Total component stock and average cost index
 
-To have better performance in:
-
-Get Total Component Stock Function
-Calculate Component Avg Cost Function
+**Description:** To have better performance in: Get Total Component Stock Function Calculate Component Avg Cost Function
 */
 
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ComponentsInventory_ComponentID_InventoryDate_Include')

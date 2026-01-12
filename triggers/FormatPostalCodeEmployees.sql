@@ -1,3 +1,14 @@
+/*
+FormatPostalCodeEmployees
+
+**Description:** Validates and normalizes postal codes for employees after inserts or updates by removing dashes and spaces.
+
+## Behavior
+
+- Rejects records where the postal code length is less than five characters after cleanup.
+- Rewrites stored postal codes to a compact format without spaces or hyphens.
+*/
+
 CREATE OR ALTER TRIGGER FormatPostalCodeEmployees ON Employees
 AFTER INSERT, UPDATE
 AS

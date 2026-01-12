@@ -1,6 +1,8 @@
--- Inventory value (components) by Supplier
+/*
+Inventory value (components) by Supplier
 
--- Prints total inventory value (components) for each supplier with inventory greater than 0
+**Description:** Shows the total value of component inventory per supplier, limited to suppliers with positive stock value.
+*/
 
 CREATE VIEW dbo.vw_ComponentsInventoryValueBySupplier AS
 WITH ValueData AS (

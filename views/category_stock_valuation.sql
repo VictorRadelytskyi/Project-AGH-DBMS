@@ -1,23 +1,25 @@
-/* Valuate Stock Categories 
+/*
+Valuate Stock Categories
 
-Provides a strategic summary of inventory investment and manufacturing 
-effort aggregated by category.
-    
-Logic:
-1. Groups products into their respective categories.
-2. Uses LEFT JOIN on Warehouse and ProductRecipes to ensure products 
-   without stock or without defined recipes are still included in counts.
-3. ISNULL(SUM(...)): Ensures that if a category has no items in the 
-   warehouse, the report shows 0 instead of NULL.
-4. TotalLabourHoursSpentManufacturing: Multiplies the stock of each 
-   item by its required labor hours and sums them up.
+**Description:** Summarizes inventory investment and manufacturing effort aggregated by category.
 
-Usage:
+## Logic
+
+1. Group products by their categories.
+2. Left join `Warehouse` and `ProductRecipes` so items without stock or recipes still appear.
+3. Use `ISNULL` to surface zero instead of `NULL` when stock is missing.
+4. Multiply stock units by labor hours to derive total manufacturing effort held in inventory.
+
+## Usage
+
+```sql
 SELECT * FROM vw_CategoryStockValuation;
+```
 
-Business Value:
-Allows management to see where capital is "frozen" in stock and how much 
-human labor is currently sitting in the warehouse.
+## Business Value
+
+- Highlights where capital is tied up in stock.
+- Shows how much labor effort is currently sitting in the warehouse.
 */
 
 CREATE VIEW vw_CategoryStockValuation

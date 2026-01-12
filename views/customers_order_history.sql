@@ -1,7 +1,12 @@
--- Customer Order History View
+/*
+Customer Order History View
 
--- Prints the order history grouped by customers, contacts and period.
--- Additional data include first and last order dates, order amounts, discounts, financial data.
+**Description:** Aggregates customer orders by month and year, including order counts, product counts, quantities, and discount statistics.
+
+## Notes
+
+- Exposes first and last order dates plus gross and discounted values per customer-period combination.
+*/
 
 CREATE VIEW vw_CustomerOrderHistory
 AS
@@ -31,4 +36,3 @@ GROUP BY
 	DATEPART(YEAR,	o.OrderDate),
 	DATEPART(MONTH,	o.OrderDate);
 GO
-

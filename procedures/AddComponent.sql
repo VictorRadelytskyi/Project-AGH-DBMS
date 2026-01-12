@@ -1,29 +1,29 @@
 /*
 AddComponent
 
-Adds a new component definition to the catalog (Components table).
+**Description:** Adds a new component definition to the catalog (Components table).
 
-Parameters:
+## Parameters
 
-@supplierID    - ID of the supplier providing this component
-@componentName - Name of the component (e.g., 'Wooden Plank')
-@componentType - Category of the component (e.g., 'Wood', 'Metal')
-@unitPrice     - Current catalog price per unit
-@ID            - OUTPUT. Returns the generated ID of the new component
+- `@supplierID`: ID of the supplier providing this component
+- `@componentName`: Name of the component (e.g., 'Wooden Plank')
+- `@componentType`: Category of the component (e.g., 'Wood', 'Metal')
+- `@unitPrice`: Current catalog price per unit
+- `@ID`: OUTPUT. Returns the generated ID of the new component
+## Usage
 
-Usage:
-
+```sql
 DECLARE @NewComponentID INT;
 
-EXEC AddComponent 
-    @supplierID = 1,
-    @componentName = 'Oak Wood Sheet',
-    @componentType = 'Wood',
-    @unitPrice = 45.50,
-    @ID = @NewComponentID OUTPUT;
+EXEC AddComponent
+@supplierID = 1,
+@componentName = 'Oak Wood Sheet',
+@componentType = 'Wood',
+@unitPrice = 45.50,
+@ID = @NewComponentID OUTPUT;
 
 SELECT @NewComponentID AS [CreatedComponentID];
-
+```
 */
 
 CREATE PROCEDURE AddComponent @supplierID INT,

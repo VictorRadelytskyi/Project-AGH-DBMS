@@ -1,22 +1,19 @@
 /*
 CheckWarehouseLocation
 
-Validates that StockLocation identifiers are strictly alphanumeric 
-and follow the "Letter-First" rule.
+**Description:** Validates that `StockLocation` identifiers start with a letter and only contain allowed characters.
 
-Rules:
-- First Character: Must be a letter (A-Z).
-- Subsequent Characters: Can be letters or numbers, dashes, commas or spaces.
-- Special characters except dashes or spaces: Prohibited.
+## Rules
 
-Logic:
-1. Rejects strings starting with 0-9 or symbols.
-2. Rejects any string containing non-alphanumeric characters unless it's dash, comma, or space.
+- First character must be a letter (`A-Z`).
+- Remaining characters may be letters, numbers, dashes, commas, or spaces.
+- All other special characters are rejected.
 
-Usage Examples:
-- 'A101'     -> SUCCESS
-- 'Warehouse1' -> SUCCESS
-- '101A'     -> FAIL (Starts with number)
+## Usage Examples
+
+- `A101` → valid
+- `Warehouse1` → valid
+- `101A` → invalid (starts with number)
 */
 
 CREATE TRIGGER CheckWarehouseLocation ON Warehouse

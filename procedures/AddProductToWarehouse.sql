@@ -1,3 +1,26 @@
+/*
+AddProductToWarehouse
+
+**Description:** Adds stock for a product to the warehouse inventory and returns the warehouse record identifier.
+
+## Parameters
+
+- `@ProductID`: Product being stocked.
+- `@UnitsInStock`: Quantity being added.
+- `@StockLocation`: Warehouse location for the stock.
+- `@ID`: Output parameter populated with the new warehouse record ID.
+
+## Usage
+
+```sql
+EXEC AddProductToWarehouse
+    @ProductID = 10,
+    @UnitsInStock = 250,
+    @StockLocation = 'A-03-02',
+    @ID = @WarehouseRecordID OUTPUT;
+```
+*/
+
 CREATE PROCEDURE AddProductToWarehouse
 @ProductID INT NOT NULL,
 @UnitsInStock INT NOT NULL,

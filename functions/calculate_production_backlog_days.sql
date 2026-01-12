@@ -1,19 +1,19 @@
 /*
 Calculate Production Backlog Days
 
-Calculates how many working days are required to fulfill 
-ALL currently listed orders, based on the total workforce 
-capacity and a 7-hour working day. (8hr shift = 7hrs work + 1hr lunch, breaks etc.)
-    
-Logic:
+**Description:** Estimates how many working days are required to fulfill all current orders given the workforce capacity and a 7‑hour working day (8‑hour shift with breaks).
 
-1. Sum(OrderQuantity * RecipeLabourHours) = Total Work Needed
-2. Sum(EmployeeProductivity * 7 hours)    = Total Daily Capacity
-3. Work Needed / Daily Capacity           = Days to Clear Backlog
+## Logic
 
-Usage:
-`SELECT fn_CalculateProductionBacklogDays() AS ProductionDaysLeft;`
+1. Calculate total work needed: `SUM(OrderQuantity * RecipeLabourHours)`.
+2. Calculate total daily capacity: `SUM(EmployeeProductivity * 7 hours)`.
+3. Divide work needed by daily capacity to get days required to clear the backlog.
 
+## Usage
+
+```sql
+SELECT fn_CalculateProductionBacklogDays() AS ProductionDaysLeft;
+```
 */
 
 CREATE FUNCTION dbo.fn_CalculateProductionBacklogDays ()

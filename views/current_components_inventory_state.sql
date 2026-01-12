@@ -1,6 +1,8 @@
--- Components inventory count by component
+/*
+Components inventory count by component
 
--- Prints total units in stock, oldest batch age in days and current average cost for each component
+**Description:** Shows current component inventory levels with supplier info, oldest batch age, and weighted average unit cost.
+*/
 
 CREATE VIEW dbo.vw_CurrentComponentsInventoryState AS
 SELECT

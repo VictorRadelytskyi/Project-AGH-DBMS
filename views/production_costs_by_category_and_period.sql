@@ -1,10 +1,14 @@
--- Production costs by Category and Period View
+/*
+Production costs by Category and Period View
 
--- Prints production costs grouped by date (year, month, week) and product category.
+**Description:** Summarizes production costs grouped by year, month, ISO week, and product category.
+
+## Notes
+
+- Assumes `UnitPrice` includes a 50% markup and labor cost; the view removes the markup to approximate production cost.
+*/
 
 CREATE VIEW dbo.vw_ProductionCostsByCategoryPeriod AS
-
--- Assuming UnitPrice contains 50% of markup and includes labour cost
 WITH Constants AS (
     SELECT 0.50 AS MarkupRate
 )

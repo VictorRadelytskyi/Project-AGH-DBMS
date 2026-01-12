@@ -1,33 +1,25 @@
 /*
 ConsumeComponentStockFromInventory
 
-Consumes a specified quantity of a component from the inventory
-using FIFO (First-In, First-Out) logic based on InventoryDate.
+**Description:** Consumes a specified quantity of a component from the inventory using FIFO (First-In, First-Out) logic based on InventoryDate. It ensures data integrity during concurrent access using UPDLOCK. It calculates the weighted average unit price of the consumed items. If the inventory stock is insufficient to meet the requirement, the remaining quantity is assumed to be purchased at the current catalog price from the Components table.
 
-It ensures data integrity during concurrent access using UPDLOCK.
+## Parameters
 
-It calculates the weighted average unit price of the consumed items.
-If the inventory stock is insufficient to meet the requirement,
-the remaining quantity is assumed to be purchased at the current 
-catalog price from the Components table.
+- `@ComponentID`: ID of the component to consume
+- `@QuantityRequired`: Total quantity needed to be consumed
+- `@AverageUnitPrice`: OUTPUT. The calculated weighted average cost per unit
+## Usage
 
-Parameters:
-
-@ComponentID      - ID of the component to consume
-@QuantityRequired - Total quantity needed to be consumed
-@AverageUnitPrice - OUTPUT. The calculated weighted average cost per unit
-
-Usage:
-
+```sql
 DECLARE @AvgCost DECIMAL(10,2);
 
-EXEC ConsumeComponentStockFromInventory 
-@ComponentID = 10, 
+EXEC ConsumeComponentStockFromInventory
+@ComponentID = 10,
 @QuantityRequired = 50,
 @AverageUnitPrice = @AvgCost OUTPUT;
 
 SELECT @AvgCost AS [ActualCostPerUnit];
-
+```
 */
 
 CREATE PROCEDURE dbo.ConsumeComponentStockFromInventory (

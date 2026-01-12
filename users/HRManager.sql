@@ -1,8 +1,9 @@
 /*
 HR manager
 
-Administrative office staff responsible for managing employee records and positions.
+**Description:** Administrative office staff responsible for managing employee records and positions.
 */
+
 CREATE ROLE Role_HRManager;
 GO
 

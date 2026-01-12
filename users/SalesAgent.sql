@@ -1,6 +1,14 @@
--- Sales Agent
+/*
+Sales Agent
 
--- Front-office staff who manage client relationships and place orders.
+**Description:** Role for front-office staff who manage customer relationships and place orders.
+
+## Permissions
+
+- Read access: `Customers`, `CustomerDemographics`.
+- Order creation: `SELECT`/`INSERT` on `Orders` and `OrderDetails`.
+- Execute access: `AddCustomer`, `UpdateCustomerDemographics`, `PlaceFullOrder`, `AddSupplier`, `UpdateSupplier`.
+*/
 
 CREATE ROLE Role_SalesAgent;
 GO

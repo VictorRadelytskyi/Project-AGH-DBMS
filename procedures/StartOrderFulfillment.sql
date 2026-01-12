@@ -1,15 +1,12 @@
 /*
 StartOrderFulfillment
 
-Marks an order as "In Progress".
+**Description:** Marks an order as "In Progress". - Validates that the order has not already started. - Assigns the Assembler (employee) responsible for the work. - Sets the fulfillmentStart timestamp to date of procedure execution.
 
-- Validates that the order has not already started.
-- Assigns the Assembler (employee) responsible for the work.
-- Sets the fulfillmentStart timestamp to date of procedure execution.
+## Parameters
 
-Parameters:
-@OrderID      - ID of the order to start.
-@AssemblerID  - ID of the Employee performing the assembly.
+- `@OrderID`: ID of the order to start.
+- `@AssemblerID`: ID of the Employee performing the assembly.
 */
 
 CREATE OR ALTER PROCEDURE dbo.StartOrderFulfillment

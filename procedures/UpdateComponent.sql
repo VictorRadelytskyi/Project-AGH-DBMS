@@ -1,27 +1,25 @@
 /*
 UpdateComponent
 
-Updates the details of an existing component definition in the catalog.
-This allows for modifying the name, type, linked supplier, or current 
-catalog price of a specific component.
+**Description:** Updates the details of an existing component definition in the catalog. This allows for modifying the name, type, linked supplier, or current catalog price of a specific component.
 
-Parameters:
+## Parameters
 
-@ID            - ID of the component to update
-@supplierID    - ID of the supplier providing this component
-@componentName - New name of the component
-@componentType - New category/type of the component
-@unitPrice     - New catalog price per unit
+- `@ID`: ID of the component to update
+- `@supplierID`: ID of the supplier providing this component
+- `@componentName`: New name of the component
+- `@componentType`: New category/type of the component
+- `@unitPrice`: New catalog price per unit
+## Usage
 
-Usage:
-
-EXEC UpdateComponent 
-    @ID = 10,
-    @supplierID = 2,
-    @componentName = '...',
-    @componentType = 'Metal',
-    @unitPrice = 0.15;
-
+```sql
+EXEC UpdateComponent
+@ID = 10,
+@supplierID = 2,
+@componentName = '...',
+@componentType = 'Metal',
+@unitPrice = 0.15;
+```
 */
 
 CREATE PROCEDURE UpdateComponent @ID INT,

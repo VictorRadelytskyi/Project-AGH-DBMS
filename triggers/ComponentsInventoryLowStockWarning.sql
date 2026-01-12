@@ -1,8 +1,7 @@
 /*
 ComponentsInventoryLowStockWarning
 
-Checks if component levels fall below a safety threshold (e.g., 10 units)
-and alerts the system.
+**Description:** Checks if component levels fall below a safety threshold (e.g., 10 units) and alerts the system.
 */
 
 CREATE TRIGGER ComponentsInventoryLowStockWarning 

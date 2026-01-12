@@ -1,22 +1,16 @@
 /*
 CancelOrder
 
-Safely removes an order and its details from the system:
-                    
-1. Checks if the Order exists.
-2. Prevents cancellation if the Order is older than 48 hours
-(assumes such orders are already processed/shipped).
-3. Deletes OrderDetails first (Foreign Key requirement).
-4. Deletes Orders header last.
+**Description:** Safely removes an order and its details from the system: 1. Checks if the Order exists. 2. Prevents cancellation if the Order is older than 48 hours (assumes such orders are already processed/shipped). 3. Deletes OrderDetails first (Foreign Key requirement). 4. Deletes Orders header last.
 
-Parameters:
+## Parameters
 
-@OrderID - The ID of the order to cancel.
-    
-Usage:
+- `@OrderID`: The ID of the order to cancel.
+## Usage
 
+```sql
 EXEC CancelOrder @OrderID = 10248;
-
+```
 */
 
 CREATE OR ALTER PROCEDURE [dbo].[CancelOrder]

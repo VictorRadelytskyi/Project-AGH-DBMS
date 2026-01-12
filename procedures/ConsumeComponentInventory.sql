@@ -1,23 +1,19 @@
 /*
 ConsumeComponentInventory
 
-Reduces the stock level of a specific inventory batch by a given quantity.
-This procedure targets a specific record by ID (e.g., a specific box or pallet).
+**Description:** Reduces the stock level of a specific inventory batch by a given quantity. This procedure targets a specific record by ID (e.g., a specific box or pallet). It performs validation to ensure sufficient stock exists in the target batch before applying the reduction.
 
-It performs validation to ensure sufficient stock exists in the target batch
-before applying the reduction.
+## Parameters
 
-Parameters:
+- `@inventoryID`: ID of the specific inventory record (ComponentsInventory.ID)
+- `@quantityToConsume`: Amount of items to remove from this batch (Must be > 0)
+## Usage
 
-@inventoryID       - ID of the specific inventory record (ComponentsInventory.ID)
-@quantityToConsume - Amount of items to remove from this batch (Must be > 0)
-
-Usage:
-
-EXEC ConsumeComponentInventory 
-    @inventoryID = 15, 
-    @quantityToConsume = 50;
-
+```sql
+EXEC ConsumeComponentInventory
+@inventoryID = 15,
+@quantityToConsume = 50;
+```
 */
 
 CREATE PROCEDURE ConsumeComponentInventory 

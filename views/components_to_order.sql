@@ -1,6 +1,12 @@
--- List of components that need restocking
+/*
+List of components that need restocking
 
--- Prints a list of components that have critically low stock in ComponentsInventory
+**Description:** Flags components with critically low inventory levels and shows supplier contact information for replenishment.
+
+## Notes
+
+- Uses a configurable critical stock threshold (currently 500 units).
+*/
 
 CREATE VIEW dbo.vw_ComponentsToOrder AS
 

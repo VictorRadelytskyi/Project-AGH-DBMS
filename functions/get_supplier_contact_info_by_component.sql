@@ -1,17 +1,16 @@
 /*
 Get Supplier's Contact Info By Component
 
-Retrieves formatted contact details (Company Name, Contact Name, Phone) 
-for the supplier responsible for a specific component.
+**Description:** Retrieves formatted contact details (Company Name, Contact Name, Phone) for the supplier responsible for a specific component.
 
-Parameters:
+## Parameters
 
-@ComponenID - ID of the component
+- `@ComponenID`: ID of the component
+## Usage
 
-Usage:
-
-`SELECT dbo.fn_GetSupplierContactInfoByComponent(10) AS [SupplierContact];`
-
+```sql
+SELECT dbo.fn_GetSupplierContactInfoByComponent(10) AS [SupplierContact];
+```
 */
 
 CREATE FUNCTION dbo.fn_GetSupplierContactInfoByComponent (@ComponentID INT)

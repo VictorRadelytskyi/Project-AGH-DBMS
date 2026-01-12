@@ -1,19 +1,16 @@
 /*
 Calculate Component Weighted Average Cost
 
-Calculates the real weighted average cost of a component based on 
-current inventory batches and their specific purchase prices.
-If no stock exists, it falls back to the catalog price defined 
-in the Components table.
+**Description:** Calculates the real weighted average cost of a component based on current inventory batches and their specific purchase prices. If no stock exists, it falls back to the catalog price defined in the Components table.
 
-Parameters:
+## Parameters
 
-@ComponentID - ID of the component to calculate
+- `@ComponentID`: ID of the component to calculate
+## Usage
 
-Usage:
-
-`SELECT fn_CalculateComponentWeightedAvgCost(10) AS [AvgUnitCost];`
-
+```sql
+SELECT fn_CalculateComponentWeightedAvgCost(10) AS [AvgUnitCost];
+```
 */
 
 CREATE FUNCTION dbo.fn_CalculateComponentWeightedAvgCost (@ComponentID INT)

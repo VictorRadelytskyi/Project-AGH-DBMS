@@ -1,10 +1,7 @@
-/* Check Assembler Employee Capacity
+/*
+Check Assembler Employee Capacity
 
-An employee shouldn't have more orders assigned to them than @MaxConcurrentOrders
-
-When an AssemblerEmployeeID is assigned or changed, check how many 
-active orders (Started but not Finished) that employee currently has.
-If it exceeds a limit (e.g., 5), block the assignment.
+**Description:** An employee shouldn't have more orders assigned to them than @MaxConcurrentOrders When an AssemblerEmployeeID is assigned or changed, check how many active orders (Started but not Finished) that employee currently has. If it exceeds a limit (e.g., 5), block the assignment.
 */
 
 CREATE OR ALTER TRIGGER dbo.TR_Orders_CheckAssemblerCapacity
