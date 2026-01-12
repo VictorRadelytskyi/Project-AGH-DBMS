@@ -6,8 +6,8 @@ items in that order based on defined volume thresholds. Updates the per-line
 `Discount` so downstream calculations stay consistent.
 
 **Volume tiers**
-- If order total > **5,000**, apply **10% (0.10)**.
-- If order total > **1,000**, apply **5% (0.05)**.
+- If order total > **5,000.00**, apply **10% (0.10)**.
+- If order total > **1,000.00**, apply **5% (0.05)**.
 - Otherwise, apply **0% (0.00)**.
 
 **Usage**
