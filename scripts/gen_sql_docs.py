@@ -139,16 +139,26 @@ def write_folder_indexes(out_root: Path, root_title: str) -> None:
         lines: list[str] = [f"# {heading}", ""]
 
         if subdirs:
-            lines += ["## Folders", ""]
+            lines += ["## Sekcje", ""]
             for sd in subdirs:
                 lines.append(f"- [{sd.name}/]({_rel_link(idx, sd / 'index.md')})")
             lines.append("")
 
         if pages:
-            lines += ["## Pages", ""]
+            lines += ["## Skrypty", ""]
             for p in pages:
                 lines.append(f"- [{_page_title(p)}]({_rel_link(idx, p)})")
             lines.append("")
+
+        # Add diagram on the homepage (docs/sql/index.md)
+        if rel_dir == Path("."):
+            diagram = out_root / "MM_VR_JI_DBMS_diagram.png"
+            if diagram.exists():
+                lines += [
+                    "![DBMS diagram](MM_VR_JI_DBMS_diagram.png)",
+                    "",
+                ]
+
 
         idx.write_text("\n".join(lines), encoding="utf-8")
 
