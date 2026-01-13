@@ -3,7 +3,7 @@
 [Dokumentacja](https://victorradelytskyi.github.io/Project-AGH-DBMS/)
 
 Autorzy poszczególnych zbiorów tabel:
-- **Marcin Małek**:  Employees, EmployeePositions, Suppliers, Components
+- **Marcin Małek**:  Employees, EmployeePositions, Suppliers, Components, ComponentsInventory
 - **Victor Radelytskyi**: Products, Categories, Warehouse, ProductRecipes
 - **Jan Iłowski**: Customers, CustomerDemographics, Orders, OrderDetails
 
@@ -68,7 +68,62 @@ Możesz odbudować bazę danych za pomocą jednego z dwóch skryptów.
    chmod +x scripts/rebuild_db_freetds.sh
    ./scripts/rebuild_db_freetds.sh
    ```
+---
+### 3. Populowanie danych testowych (Mock Data)
 
+Proces ten składa się z załadowania danych słownikowych (SQL) oraz wygenerowania danych transakcyjnych (Python).
+
+#### Etap A: Dane statyczne (SQL)
+
+Załaduj podstawowe dane (klienci, produkty, pracownicy) uruchamiając skrypt `00_populate_mock_data.sql`.
+
+**Za pomocą `sqlcmd`**:
+
+```bash
+sqlcmd -S <SERWER> -d <BAZA_DANYCH> -U <UŻYTKOWNIK> -P <HASŁO> -I -b -i 00_populate_mock_data.sql
+```
+
+#### Etap B: Generowanie zamówień i procesów (Python)
+
+Skrypty symulują składanie zamówień oraz proces ich kompletacji i wysyłki.
+
+1. **Wymagania**: Python 3.x oraz biblioteka `pymssql`.
+  
+2. **Konfiguracja**: Skrypty wymagają ustawienia zmiennych środowiskowych z danymi dostępowymi.
+  
+3. **Uruchomienie**:  
+
+```bash
+# Instalacja zależności
+pip install pymssql
+
+# Ustawienie zmiennych (Linux/MacOS)
+export DB_USER="<nazwa_użytkownika>"
+export DB_PASSWORD="<hasło>"
+
+# 1. Generowanie losowych zamówień (50 rekordów)
+python3 mock_orders.py
+
+# 2. Symulacja realizacji zamówień (magazyn, produkcja)
+python3 mock_orders_fulfill.py
+```
+
+#### Konfiguracja symulacji i statystyka
+
+Aby zmienić liczbę generowanych zamówień, edytuj zmienną `NO_OF_RECORDS` na początku pliku `mock_orders.py`.
+
+Zastosowane rozkłady prawdopodobieństwa dla zmiennych losowych:
+
+- **Wielkość zamówienia (liczba pozycji)**: Rozkład Pareto ($\alpha=1.16$), przycięty do max. 10 pozycji (symulacja "długiego ogona" sprzedaży).
+  
+- **Ilość sztuk produktu**: Rozkład Pareto ($\alpha=1.16$), skalowany współczynnikiem 0.6.
+  
+- **Koszt transportu**: Rozkład hybrydowy – 70% szans na stawkę standardową (odchylenie $\pm10\%$) oraz 30% szans na stawkę premium/ekspres (mnożnik od 2x do 5x).
+  
+- **Daty operacji**: Rozkład jednostajny (Uniform) w zdefiniowanych oknach czasowych (np. `start` + `delta`).
+  
+- **Logistyka (Restock)**: Ilość domawianych komponentów wg rozkładu Pareto; prawdopodobieństwo wystąpienia dostawy przed realizacją zamówienia wynosi 80%.
+  
 ---
 
 ## Generowanie dokumentacji SQL
